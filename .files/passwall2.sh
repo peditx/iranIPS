@@ -92,6 +92,9 @@ sleep 1
 opkg install kmod-netlink-diag
 sleep 1
 opkg install kmod-tun
+sleep 2
+opkg install luci-lib-ipkg
+sleep 2
 
 >/etc/banner
 
