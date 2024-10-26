@@ -30,15 +30,15 @@ cd /etc/init.d/
 
 rm peditx
 
-wget https://raw.githubusercontent.com/amirhosseinchoghaei/mi4agigabit/main/amir
+wget https://github.com/peditx/iranIPS/raw/refs/heads/main/.files/lowspc/main/peditx
 
-chmod +x /etc/init.d/amir
+chmod +x /etc/init.d/peditx
 
-/etc/init.d/amir enable
+/etc/init.d/peditx enable
 
 cd /root/
 
 
-/etc/init.d/amir start
+/etc/init.d/peditx start
 
 echo -e "${GREEN} Update Complated ! ${ENDCOLOR}"
