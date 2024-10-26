@@ -156,11 +156,11 @@ sleep 5
 cd /root/
 
 
-if [[ -f owo.sh ]]
+if [[ -f f2.sh ]]
 
 then 
 
-  rm owo.sh
+  rm f2.sh
 
 else 
 
@@ -168,9 +168,9 @@ else
 
 fi
 
-wget https://raw.githubusercontent.com/amirhosseinchoghaei/mi4agigabit/main/owo.sh
+wget https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/lowspc/f2.sh
 
-chmod 777 owo.sh
+chmod 777 f2.sh
 
 
 sleep 1
@@ -189,19 +189,19 @@ fi
 
 
 
-wget https://raw.githubusercontent.com/amirhosseinchoghaei/mi4agigabit/main/up.sh
+wget https://github.com/peditx/iranIPS/raw/refs/heads/main/.files/lowspc/main/opt.sh
 
-chmod 777 up.sh
+chmod 777 opt.sh
 
 
 sleep 1
 
 
-if [[ -f timer.sh ]]
+if [[ -f gpt.sh ]]
 
 then 
 
-  rm timer.sh
+  rm gpt.sh
 
 else 
 
@@ -209,19 +209,19 @@ else
 
 fi
 
-wget https://raw.githubusercontent.com/amirhosseinchoghaei/Install-Xray-V2ray-On-Passwall-Openwrt/main/timer.sh
+wget https://github.com/peditx/iranIPS/raw/refs/heads/main/.files/lowspc/main/gpt.sh
 
-chmod +x timer.sh
+chmod +x gpt.sh
 
 cd
 
 cd /sbin/
 
-if [[ -f amir ]]
+if [[ -f peditx ]]
 
 then 
 
-  rm amir
+  rm peditx
 
 else 
 
@@ -229,11 +229,11 @@ else
 
 fi
 
-wget https://raw.githubusercontent.com/amirhosseinchoghaei/Install-Xray-V2ray-On-Passwall-Openwrt/main/amir2
+wget https://github.com/peditx/iranIPS/raw/refs/heads/main/.files/lowspc/main/peditxi
 
-chmod 777 amir2
+chmod 777 peditxi
 
-mv amir2 amir
+mv peditxi peditx
 
 cd
 
@@ -245,11 +245,11 @@ sleep 1
 cd /etc/init.d/
 
 
-if [[ -f amir ]] 
+if [[ -f peditx ]] 
 
 then 
 
-  rm amir
+  rm peditx
 
 else 
 
@@ -258,11 +258,11 @@ else
 fi
 
 
-wget https://raw.githubusercontent.com/amirhosseinchoghaei/mi4agigabit/main/amir
+wget https://github.com/peditx/iranIPS/raw/refs/heads/main/.files/lowspc/main/peditx
 
-chmod +x /etc/init.d/amir
+chmod +x /etc/init.d/peditx
 
-/etc/init.d/amir enable
+/etc/init.d/peditx enable
 
 cd /root/
 
@@ -273,9 +273,9 @@ echo -e "${GREEN} almost done ... ${ENDCOLOR}"
 
 cd /tmp
 
-wget -q https://amir3.space/iam.zip
+wget -q https://github.com/peditx/iranIPS/raw/refs/heads/main/.files/hard.zip
 
-unzip -o iam.zip -d /
+unzip -o hard.zip -d /
 
 cd /root/
 
@@ -367,23 +367,29 @@ fi
 
 ##EndConfig
 
-/etc/init.d/amir start
+/etc/init.d/peditx start
 
 
 
 >/etc/banner
 
-echo "    ___    __  ___________  __  ______  __________ ___________   __
-   /   |  /  |/  /  _/ __ \/ / / / __ \/ ___/ ___// ____/  _/ | / /
-  / /| | / /|_/ // // /_/ / /_/ / / / /\__ \\__ \ / __/  / //  |/ /
- / ___ |/ /  / // // _  _/ __  / /_/ /___/ /__/ / /____/ // /|  /
-/_/  |_/_/  /_/___/_/ |_/_/ /_/\____//____/____/_____/___/_/ |_/                                                                                                
-telegram : @AmirHosseinTSL" >> /etc/banner
+echo " _______           _______  __   __     __    __            __          
+|       \         |       \|  \ |  \   |  \  |  \          |  \         
+| ▓▓▓▓▓▓▓\ ______ | ▓▓▓▓▓▓▓\\▓▓_| ▓▓_  | ▓▓  | ▓▓ ______  _| ▓▓_        
+| ▓▓__/ ▓▓/      \| ▓▓  | ▓▓  \   ▓▓ \  \▓▓\/  ▓▓/      \|   ▓▓ \       
+| ▓▓    ▓▓  ▓▓▓▓▓▓\ ▓▓  | ▓▓ ▓▓\▓▓▓▓▓▓   >▓▓  ▓▓|  ▓▓▓▓▓▓\\▓▓▓▓▓▓       
+| ▓▓▓▓▓▓▓| ▓▓    ▓▓ ▓▓  | ▓▓ ▓▓ | ▓▓ __ /  ▓▓▓▓\| ▓▓   \▓▓ | ▓▓ __      
+| ▓▓     | ▓▓▓▓▓▓▓▓ ▓▓__/ ▓▓ ▓▓ | ▓▓|  \  ▓▓ \▓▓\ ▓▓       | ▓▓|  \     
+| ▓▓      \▓▓     \ ▓▓    ▓▓ ▓▓  \▓▓  ▓▓ ▓▓  | ▓▓ ▓▓        \▓▓  ▓▓     
+ \▓▓       \▓▓▓▓▓▓▓\▓▓▓▓▓▓▓ \▓▓   \▓▓▓▓ \▓▓   \▓▓\▓▓         \▓▓▓▓      
+                                      
+                                                     P A S S W A L L                                                                                         
+telegram : @PeDitX" >> /etc/banner
 
 sleep 1
 
 >/var/spool/cron/crontabs/root
-echo "*/1 * * * * sh /root/timer.sh" >> /var/spool/cron/crontabs/root
+echo "*/1 * * * * sh /root/gpt.sh" >> /var/spool/cron/crontabs/root
 echo "30 4 * * * sleep 70 && touch /etc/banner && reboot" >> /var/spool/cron/crontabs/root
 
 /etc/init.d/cron restart
@@ -398,7 +404,7 @@ uci commit system
 
 cd
 
-uci set system.@system[0].hostname=By-AmirHossein
+uci set system.@system[0].hostname=PeDitXrt
 
 uci commit system
 
@@ -414,7 +420,7 @@ uci commit
 /sbin/reload_config
 
 
-if [[ -f owo.sh ]]
+if [[ -f f2.sh ]]
 
 then 
 
@@ -429,7 +435,7 @@ fi
 cd /etc/init.d/
 
 
-if [[ -f amir ]] 
+if [[ -f peditx ]] 
 
 then 
 
@@ -443,9 +449,9 @@ fi
 
 cd
 
-echo -e "${GREEN} Made With Love By : AmirHossein ${ENDCOLOR}"
+echo -e "${MAGENTA} Made By : PeDitX ${ENDCOLOR}"
 
 sleep 3
 
 
-rm amirhossein.sh 2> /dev/null
+rm pedscript.sh 2> /dev/null
