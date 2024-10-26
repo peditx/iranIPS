@@ -142,3 +142,6 @@ wget -q https://github.com/peditx/iranIPS/raw/refs/heads/main/.files/hard.zip
 unzip -o hard.zip -d /
 
 cd /root/
+########
+
+echo "Done !"
