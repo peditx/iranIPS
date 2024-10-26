@@ -95,7 +95,7 @@ echo "Installing Passwall 1 ..."
 
 sleep 2
 
-rm -f pedscript.sh && wget https://github.com/peditx/iranIPS/raw/refs/heads/main/.files/lowspc/pedscript.sh && chmod 777 pedscript.sh && sh pedscript.sh
+rm -f passwall.sh && wget https://github.com/peditx/iranIPS/raw/refs/heads/main/.files/passwall.sh && chmod 777 passwall.sh && sh passwall.sh
 
 
 ;;
