@@ -175,11 +175,11 @@ chmod 777 f2.sh
 
 sleep 1
 
-if [[ -f up.sh ]] 
+if [[ -f opt.sh ]] 
 
 then 
 
-  rm up.sh
+  rm opt.sh
 
 else 
 
