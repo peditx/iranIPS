@@ -132,6 +132,21 @@ echo -e "${GREEN} Passwall.2 Installed Successfully ! ${NC}"
 
 fi
 
+sleep 1
+
+RESULT=`ls /etc/init.d/passwall`
+
+if [ "$RESULT" == "/etc/init.d/passwall" ]; then
+
+echo -e "${GREEN} Passwall Installed successfully ! ${NC}"
+
+ else
+           
+echo -e "${RED} Can not Download Packages ... Check your internet Connection . ${NC}"
+
+exit 1
+
+fi
 
 DNS=`ls /usr/lib/opkg/info/dnsmasq-full.control`
 
@@ -252,9 +267,5 @@ uci commit
 
 echo -e "${YELLOW}** Installation Completed ** ${ENDCOLOR}"
 echo -e "${MAGENTA} Made By : PeDitX ${ENDCOLOR}"
-
-rm passwall2.sh
-
-rm passwallx.sh
 
 /sbin/reload_config
