@@ -200,7 +200,8 @@ uci set passwall2.@global[0].remote_dns='8.8.4.4'
 uci set passwall2.Direct=shunt_rules
 uci set passwall2.Direct.network='tcp,udp'
 uci set passwall2.Direct.remarks='IRAN'
-uci set passwall2.Direct.ip_list='0.0.0.0/8
+uci set passwall2.Direct.ip_list='geoip:ir
+0.0.0.0/8
 10.0.0.0/8
 100.64.0.0/10
 127.0.0.0/8
@@ -230,7 +231,8 @@ fe80::/10
 ff00::/8
 geoip:ir'
 uci set passwall2.Direct.domain_list='regexp:^.+\.ir$
-geosite:category-ir'
+geosite:category-ir
+kifpool.me'
 
 uci set passwall2.myshunt.Direct='_direct'
 
