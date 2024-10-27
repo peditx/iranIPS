@@ -252,8 +252,4 @@ uci commit
 echo -e "${YELLOW}** Installation Completed ** ${ENDCOLOR}"
 echo -e "${MAGENTA} Made By : PeDitX ${ENDCOLOR}"
 
-rm passwall2.sh
-
-rm passwallx.sh
-
 /sbin/reload_config
