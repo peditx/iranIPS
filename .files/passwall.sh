@@ -104,6 +104,8 @@ opkg install kmod-nft-tproxy
 sleep 2
 opkg install luci-lib-ipkg
 sleep 2
+opkg install v2ray-geosite-ir
+sleep 2
 
 >/etc/banner
 
