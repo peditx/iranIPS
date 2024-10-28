@@ -340,16 +340,16 @@ uci set passwall2.MainShunt=nodes
 uci set passwall2.MainShunt.remarks='MainShunt'
 uci set passwall2.MainShunt.type='Xray'
 uci set passwall2.MainShunt.protocol='_shunt'
-uci set passwall2.MainShunt.DirectGame='_direct'
-uci set passwall2.MainShunt.ProxyGame='_default'
+uci set passwall2.MainShunt.Direct='_direct'
+uci set passwall2.MainShunt.DirectGame='_default'
 
 # PC-Shunt
 uci set passwall2.PC_Shunt=nodes
 uci set passwall2.PC_Shunt.remarks='PC-Shunt'
 uci set passwall2.PC_Shunt.type='Xray'
 uci set passwall2.PC_Shunt.protocol='_shunt'
-uci set passwall2.PC_Shunt.DirectGame='_direct'
-uci set passwall2.PC_Shunt.ProxyGame='_default'
+uci set passwall2.PC_Shunt.Direct='_direct'
+uci set passwall2.PC_Shunt.DirectGame='_default'
 
 uci commit passwall2
 
