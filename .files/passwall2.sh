@@ -239,8 +239,7 @@ uci set passwall2.Direct.ip_list='geoip:ir
 2002::/16
 fc00::/7
 fe80::/10
-ff00::/8
-geoip:ir'
+ff00::/8'
 uci set passwall2.Direct.domain_list='regexp:^.+\.ir$
 geosite:category-ir
 kifpool.me'
