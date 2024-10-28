@@ -321,9 +321,11 @@ aternos.com
 steamcommunity.com
 steam.com
 steampowered.com
-steamstatic.com'
+steamstatic.com
+chatgpt.com
+openai.com'
 
-uci set passwall2.myshunt.Direct='_PCDirect'
+uci set passwall2.myshunt.DirectGame='_DirectGame'
 ##there
 
 uci commit passwall2
