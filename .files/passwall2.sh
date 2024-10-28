@@ -323,7 +323,7 @@ steam.com
 steampowered.com
 steamstatic.com'
 
-uci set passwall2.myshunt.Direct='_direct'
+uci set passwall2.myshunt.Direct='_PCDirect'
 ##there
 
 uci commit passwall2
