@@ -198,6 +198,16 @@ uci set passwall2.@global_forwarding[0].tcp_redir_ports='1:65535'
 uci set passwall2.@global_forwarding[0].udp_redir_ports='1:65535'
 uci set passwall2.@global[0].remote_dns='8.8.4.4'
 
+# Delete unused rules
+uci delete passwall2.ProxyGame
+uci delete passwall2.GooglePlay
+uci delete passwall2.Netflix
+uci delete passwall2.OpenAI
+uci delete passwall2.Proxy
+uci delete passwall2.China
+uci delete passwall2.QUIC
+uci delete passwall2.UDP
+
 uci set passwall2.Direct=shunt_rules
 uci set passwall2.Direct.network='tcp,udp'
 uci set passwall2.Direct.remarks='IRAN'
@@ -314,7 +324,9 @@ aternos.com
 steamcommunity.com
 steam.com
 steampowered.com
-steamstatic.com'
+steamstatic.com
+chatgpt.com
+openai.com'
 #####pcdirect end
 
 uci set passwall2.myshunt.Direct='_direct'
