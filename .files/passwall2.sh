@@ -332,6 +332,24 @@ openai.com'
 uci set passwall2.myshunt.Direct='_direct'
 ###pcdirect set
 uci set passwall2.myshunt.DirectGame='_direct'
+#  myshunt
+uci delete passwall2.myshunt
+
+#  MainShunt
+uci set passwall2.MainShunt=nodes
+uci set passwall2.MainShunt.remarks='MainShunt'
+uci set passwall2.MainShunt.type='Xray'
+uci set passwall2.MainShunt.protocol='_shunt'
+uci set passwall2.MainShunt.DirectGame='_direct'
+uci set passwall2.MainShunt.ProxyGame='_default'
+
+# PC-Shunt
+uci set passwall2.PC_Shunt=nodes
+uci set passwall2.PC_Shunt.remarks='PC-Shunt'
+uci set passwall2.PC_Shunt.type='Xray'
+uci set passwall2.PC_Shunt.protocol='_shunt'
+uci set passwall2.PC_Shunt.DirectGame='_direct'
+uci set passwall2.PC_Shunt.ProxyGame='_default'
 
 uci commit passwall2
 
