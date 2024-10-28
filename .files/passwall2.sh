@@ -189,6 +189,15 @@ uci set system.@system[0].zonename='Asia/Tehran'
 
 uci set system.@system[0].timezone='<+0330>-3:30'
 
+#########
+# delete shunt_rules ex Direct و DirectGame
+for rule in $(uci show passwall2 | grep '.type=shunt_rules' | cut -d'.' -f2); do
+    if [[ "$rule" != "Direct" && "$rule" != "DirectGame" ]]; then
+        uci delete passwall2.$rule
+    fi
+done
+
+########
 
 uci set passwall2.@global_forwarding[0]=global_forwarding
 uci set passwall2.@global_forwarding[0].tcp_no_redir_ports='disable'
