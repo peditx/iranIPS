@@ -235,6 +235,96 @@ geosite:category-ir
 kifpool.me'
 
 uci set passwall2.myshunt.Direct='_direct'
+#my pc
+uci set passwall2.Direct=shunt_rules
+uci set passwall2.Direct.network='tcp,udp'
+uci set passwall2.Direct.remarks='PC-Shunt'
+uci set passwall2.Direct.ip_list=''
+uci set passwall2.Direct.domain_list='nvidia.com
+youtube.com
+epicgames.com
+meta.com
+instagram.com
+facebook.com
+twitter.com
+tiktok.com
+youtube.com
+spotify.com
+capcut.com
+adobe.com
+ubisoft.com
+google.com
+x.com
+bingx.com
+mexc.com
+openwrt.org
+twitch.tv
+asus.com
+byteoversea.com
+tiktokv.com
+xbox.com
+us.download.nvidia.com
+fcdn.co
+adobe.io
+cloudflare.com
+playstation.com
+tradingview.com
+reachthefinals.com
+midi-mixer.com
+google-analytics.com
+cloudflare-dns.com
+asus.com
+bingx.com
+activision.com
+biostar.com.tw
+aternos.me
+geforce.com
+gvt1.com
+ubisoft.com
+ubi.com
+ea.com
+eapressportal.com
+myaccount.ea.com
+origin.com
+epicgames.com
+epicgames.dev
+rockstargames.com
+rockstarnorth.com
+googlevideo.com
+2ip.io
+telegram.com
+telegram.org
+safepal.com
+microsoft.com
+apps.microsoft.com
+live.com
+ytimg.com
+t.me
+whatsapp.com
+adobe.com
+adobe.io
+reddit.com
+pvp.net
+discord.com
+discord.gg
+discordapp.net
+discordapp.com
+bing.com
+discord.media
+approved-proxy.bc.ubisoft.com
+tlauncher.org
+aternos.host
+aternos.me
+aternos.org
+aternos.net
+aternos.com
+steamcommunity.com
+steam.com
+steampowered.com
+steamstatic.com'
+
+uci set passwall2.myshunt.Direct='_direct'
+##there
 
 uci commit passwall2
 
