@@ -32,27 +32,27 @@ ${NC}"
 echo -e "${BLUE}Updating package lists...${NC}"
 opkg update
 
-# Array of packages to install
-packages=("sing-box" "haproxy" "v2ray-core" "luci-app-v2raya" "luci-app-openvpn" "softethervpn5-client" "fontconfig" "luci-app-wol" "hysteria")
+# List of packages to install
+packages="sing-box haproxy v2ray-core luci-app-v2raya luci-app-openvpn softethervpn5-client fontconfig luci-app-wol hysteria"
 
-# Initialize an array to track installation results
-install_results=()
+# Initialize installation results variable
+install_results=""
 
 # Install each package if it's not already installed
-for package in "${packages[@]}"; do
+for package in $packages; do
     if ! opkg list-installed | grep -q "^${package} "; then
         echo -e "${YELLOW}Installing ${package}...${NC}"
         opkg install "${package}"
 
         # Check installation success and store result
         if opkg list-installed | grep -q "^${package} "; then
-            install_results+=("${package} installed successfully ✅ OK")
+            install_results="${install_results}${GREEN}${package} installed successfully ✅ OK${NC}\n"
         else
-            install_results+=("${package} installation failed ❌ FAILED")
+            install_results="${install_results}${RED}${package} installation failed ❌ FAILED${NC}\n"
         fi
     else
         echo -e "${CYAN}${package} is already installed. Skipping...${NC}"
-        install_results+=("${package} is already installed. Skipping...")
+        install_results="${install_results}${CYAN}${package} is already installed. Skipping...${NC}\n"
     fi
 done
 
