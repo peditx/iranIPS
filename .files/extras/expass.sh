@@ -1,4 +1,3 @@
-
 #!/bin/sh
 
 # Colors for output
@@ -154,6 +153,16 @@ if uci show passwall2.singshunt >/dev/null 2>&1; then
     echo -e "${GREEN}singbox shunt configured successfully with remarks 'singshunt' ✅ OK${NC}"
 else
     echo -e "${RED}singbox shunt configuration failed ❌ FAILED${NC}"
+fi
+
+# Prompt user for continuation
+read -p "${CYAN}Press Enter to continue or press 0 to exit: ${NC}" user_input
+
+if [[ "$user_input" == "0" ]]; then
+    echo -e "${YELLOW}Exiting script...${NC}"
+    exit 0
+else
+    rm -f extra.sh && wget https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/extras/extra.sh && chmod 777 extra.sh && sh extra.sh
 fi
 
 # Display the "Made by PeDitX" message
