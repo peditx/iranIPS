@@ -146,6 +146,8 @@ else
     echo -e "${RED}singbox shunt configuration failed ❌ FAILED${NC}"
 fi
 
+sleep 5 
+
 # Prompt user for continuation
 read -p "${CYAN}Press Enter to continue or press 0 to exit: ${NC}" user_input
 
