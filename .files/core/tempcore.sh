@@ -361,7 +361,7 @@ uci commit
 
 rm /usr/bin/xray
 
-echo -e "${YELLOW}** Warning : To install Mahsa Core visit > Passwall2 > App Update > Xray Force Update ** ${ENDCOLOR}"
+echo -e "${YELLOW}** Warning : To install Temperory Core visit > Passwall2 > App Update > Xray Force Update ** ${ENDCOLOR}"
 
 echo -e "${MAGENTA} Made By : PeDitX ${ENDCOLOR}"
 
