@@ -33,19 +33,10 @@ echo -e "${BLUE}Updating package lists...${NC}"
 opkg update
 
 # Array of packages to install
-packages=(
-    "sing-box"
-    "haproxy"
-    "v2ray-core"
-    "luci-app-v2raya"
-    "luci-app-openvpn"
-    "softethervpn5-client"
-    "fontconfig"
-    "luci-app-wol"  # Adding luci-app-wol to the installation list
-)
+packages="sing-box haproxy v2ray-core luci-app-v2raya luci-app-openvpn softethervpn5-client fontconfig luci-app-wol"
 
 # Install each package if it's not already installed
-for package in "${packages[@]}"; do
+for package in $packages; do
     if ! opkg list-installed | grep -q "^${package} "; then
         echo -e "${YELLOW}Installing ${package}...${NC}"
         opkg install "${package}"
