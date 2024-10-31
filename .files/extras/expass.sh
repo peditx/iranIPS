@@ -11,6 +11,8 @@ CYAN='\033[0;36m'
 GRAY='\033[0;37m'
 NC='\033[0m' # No Color
 
+clear
+
 # Display the banner in magenta
 echo -e "${MAGENTA}
  _______           _______  __   __     __    __            __          
