@@ -78,14 +78,13 @@ fi
 
 # Display installation results for each package
 echo -e "\n# Verification Results:"
-for result in "${install_results[@]}"; do
-    echo -e "${result}"
-done
+echo -e "${install_results}"
 
 # Prompt user for continuation with colored text
-read -p "$(echo -e "${GREEN} Enter to continue or press 0 to exit: ${NC}")" user_input
+echo -e "\033[0;36mPress Enter to continue or press 0 to exit: \033[0m"
+read user_input
 
-if [[ "$user_input" == "0" ]]; then
+if [ "$user_input" = "0" ]; then
     echo -e "${YELLOW}Exiting script...${NC}"
     exit 0
 else
