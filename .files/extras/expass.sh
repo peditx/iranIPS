@@ -148,8 +148,8 @@ fi
 
 sleep 5 
 
-# Prompt user for continuation
-read -p "${CYAN}Press Enter to continue or press 0 to exit: ${NC}" user_input
+# Prompt user for continuation with colored text
+read -p "$(echo -e "${GREEN} Enter to continue or press 0 to exit: ${NC}")" user_input
 
 if [[ "$user_input" == "0" ]]; then
     echo -e "${YELLOW}Exiting script...${NC}"
