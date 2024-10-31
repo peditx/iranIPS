@@ -48,12 +48,12 @@ read -p "Press Enter to continue"
 
 # Show options in yellow
 echo -e "${YELLOW}Please select your OS you need to install:${NC}"
-echo "1- PeDitXrt"
-echo "2- MikroTik"
-echo "3- OpenWRT"
-echo "4- ImmortalWRT"
-echo "5- Custom Link"
-echo -e "${RED}0- Back Menu${NC}"
+echo -e "${RED}1-${NC} ${MAGENTA}PeDitXrt${NC}"
+echo -e "${RED}2-${NC} ${CYAN}MikroTik${NC}"
+echo -e "${RED}3-${NC} ${GREEN}OpenWRT${NC}"
+echo -e "${RED}4-${NC} ${YELLOW}ImmortalWRT${NC}"
+echo -e "${RED}5-${NC} ${BLUE}Custom Link${NC}"
+echo -e "${RED}0-${NC} Back Menu${NC}"
 echo ""
 
 # Loop until a valid choice is made
