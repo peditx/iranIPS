@@ -68,8 +68,6 @@ uci set passwall2.MainShunt.DirectGame='_default'
 # Commit the changes
 uci commit passwall2
 
-clear
-
 # Verify main shunt creation
 echo -e "${BLUE}Verifying SingBoX shunt creation...${NC}"
 if uci show passwall2.MainShunt | grep -q "remarks='SingBoX-Shunt'"; then
@@ -94,13 +92,12 @@ read user_input
 
 if [ "$user_input" = "0" ]; then
     echo -e "${YELLOW}Exiting script...${NC}"
+    # Display the "Made by PeDitX" message
+    echo -e "${MAGENTA}Made by PeDitX${NC}"
+    sleep 5  # Wait for 5 seconds before exiting
     exit 0
 else
     rm -f extra.sh && wget https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/extras/extra.sh && chmod 777 extra.sh && sh extra.sh
 fi
-
-# Display the "Made by PeDitX" message
-echo -e "${MAGENTA}Made by PeDitX${NC}"
-sleep 5  # Wait for 5 seconds before exiting
 
 echo -e "${MAGENTA}All installations and configurations completed.${NC}"
