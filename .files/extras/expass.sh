@@ -68,6 +68,8 @@ uci set passwall2.MainShunt.DirectGame='_default'
 # Commit the changes
 uci commit passwall2
 
+clear
+
 # Verify main shunt creation
 echo -e "${BLUE}Verifying SingBoX shunt creation...${NC}"
 if uci show passwall2.MainShunt | grep -q "remarks='SingBoX-Shunt'"; then
