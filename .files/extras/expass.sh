@@ -33,15 +33,26 @@ echo -e "${BLUE}Updating package lists...${NC}"
 opkg update
 
 # Array of packages to install
-packages="sing-box haproxy v2ray-core luci-app-v2raya luci-app-openvpn softethervpn5-client fontconfig luci-app-wol"
+packages=("sing-box" "haproxy" "v2ray-core" "luci-app-v2raya" "luci-app-openvpn" "softethervpn5-client" "fontconfig" "luci-app-wol" "hysteria")
+
+# Initialize an array to track installation results
+install_results=()
 
 # Install each package if it's not already installed
-for package in $packages; do
+for package in "${packages[@]}"; do
     if ! opkg list-installed | grep -q "^${package} "; then
         echo -e "${YELLOW}Installing ${package}...${NC}"
         opkg install "${package}"
+
+        # Check installation success and store result
+        if opkg list-installed | grep -q "^${package} "; then
+            install_results+=("${package} installed successfully ✅ OK")
+        else
+            install_results+=("${package} installation failed ❌ FAILED")
+        fi
     else
         echo -e "${CYAN}${package} is already installed. Skipping...${NC}"
+        install_results+=("${package} is already installed. Skipping...")
     fi
 done
 
@@ -57,18 +68,6 @@ uci set passwall2.MainShunt.DirectGame='_default'
 # Commit the changes
 uci commit passwall2
 
-# Verification of installations and configurations
-echo -e "\n${MAGENTA}Verification Results:${NC}"
-
-# Verify each package installation separately
-for package in $packages; do
-    if opkg list-installed | grep -q "^${package} "; then
-        echo -e "${GREEN}${package} installed successfully ✅ OK${NC}"
-    else
-        echo -e "${RED}${package} installation failed ❌ FAILED${NC}"
-    fi
-done
-
 # Verify main shunt creation
 echo -e "${BLUE}Verifying SingBoX shunt creation...${NC}"
 if uci show passwall2.MainShunt | grep -q "remarks='SingBoX-Shunt'"; then
@@ -76,6 +75,12 @@ if uci show passwall2.MainShunt | grep -q "remarks='SingBoX-Shunt'"; then
 else
     echo -e "${RED}SingBoX shunt configuration failed ❌ FAILED${NC}"
 fi
+
+# Display installation results for each package
+echo -e "\n# Verification Results:"
+for result in "${install_results[@]}"; do
+    echo -e "${result}"
+done
 
 # Prompt user for continuation with colored text
 read -p "$(echo -e "${GREEN} Enter to continue or press 0 to exit: ${NC}")" user_input
