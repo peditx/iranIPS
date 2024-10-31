@@ -10,6 +10,10 @@ CYAN='\033[0;36m'
 GRAY='\033[0;37m'
 NC='\033[0m' # No Color
 
+
+#Download resize Script
+curl -O https://raw.githubusercontent.com/peditx/easywrt/36d3bf205b46c1d7b17bfbc7c2973b7a54887c39/op/resize.sh
+
 # Clear the terminal
 clear
 
