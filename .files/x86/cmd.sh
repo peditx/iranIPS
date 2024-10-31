@@ -27,10 +27,21 @@ echo -e "${MAGENTA}
                                                 X86  T  O  O  L  S
 ${NC}"
 
-read -p "Press Enter to continue"
 # Welcome message
 echo -e "${GREEN}Welcome to the installer!${NC}"
 echo ""
+
+# Check the system OS
+OS_NAME=$(uname -o)
+
+# Show warning message if the OS is OpenWRT or ImmortalWRT
+if [[ "$OS_NAME" == *"OpenWrt"* ]] || [[ "$OS_NAME" == *"ImmortalWRT"* ]]; then
+    echo -e "${RED}Your operating system is OpenWRT or ImmortalWRT. This section may not work for you and could potentially harm your device. It's better to choose option 0 to return to the main menu.${NC}"
+    echo ""
+fi
+
+# Prompt user to continue
+read -p "Press Enter to continue"
 
 # Show options in yellow
 echo -e "${YELLOW}Please select your OS you need to install:${NC}"
