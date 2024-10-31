@@ -359,7 +359,7 @@ my.irancell.ir'
 
 uci commit
 
-echo -e "${YELLOW}** Warning : To install TempCore visit > Passwall2 > App Update > Xray Force Update ** ${ENDCOLOR}"
+echo -e "${YELLOW}** Warning : To install Temperory Core visit > Passwall2 > App Update > Xray Force Update ** ${ENDCOLOR}"
 
 echo -e "${MAGENTA} Made By : PeDitX ${ENDCOLOR}"
 
