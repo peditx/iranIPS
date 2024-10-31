@@ -38,7 +38,7 @@ if [ "$SNNAP" == "SNAPSHOT" ]; then
 
 echo -e "${YELLOW} SNAPSHOT Version Detected ! ${NC}"
 
-rm -f mahsa-s.sh && wget https://raw.githubusercontent.com/amirhosseinchoghaei/Passwall/refs/heads/main/mahsa-s.sh && chmod 777 mahsa-s.sh && sh mahsa-s.sh
+rm -f core.sh && wget https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/core/core.sh && chmod 777 core.sh && sh core.sh
 
 exit 1
 
