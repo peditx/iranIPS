@@ -53,7 +53,7 @@ echo -e "${RED}2-${NC} ${CYAN}MikroTik${NC}"
 echo -e "${RED}3-${NC} ${GREEN}OpenWRT${NC}"
 echo -e "${RED}4-${NC} ${YELLOW}ImmortalWRT${NC}"
 echo -e "${RED}5-${NC} ${BLUE}Custom Link${NC}"
-echo -e "${RED}0-${NC} Back Menu${NC}"
+echo -e "${RED}0-${NC} Back to main Menu${NC}"
 echo ""
 
 # Loop until a valid choice is made
