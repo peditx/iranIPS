@@ -68,6 +68,8 @@ uci set passwall2.MainShunt.DirectGame='_default'
 # Commit the changes
 uci commit passwall2
 
+clear
+
 # Verify main shunt creation
 echo -e "${BLUE}Verifying SingBoX shunt creation...${NC}"
 if uci show passwall2.MainShunt | grep -q "remarks='SingBoX-Shunt'"; then
@@ -78,7 +80,13 @@ fi
 
 # Display installation results for each package
 echo -e "\n# Verification Results:"
-echo -e "${install_results}"
+for package in $packages; do
+    if opkg list-installed | grep -q "^${package} "; then
+        echo -e "${GREEN}${package} installed successfully ✅ OK${NC}"
+    else
+        echo -e "${RED}${package} installation failed ❌ FAILED${NC}"
+    fi
+done
 
 # Prompt user for continuation with colored text
 echo -e "\033[0;36mPress Enter to continue or press 0 to exit: \033[0m"
