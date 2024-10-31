@@ -36,8 +36,7 @@ echo ""
 OS_NAME=$(uname -o)
 
 # Show warning message if the OS is OpenWRT or ImmortalWRT
-if [[ "$OS_NAME" == *"OpenWrt"* ]] || [[ "$OS_NAME" == *"ImmortalWRT"* ]]; then
-    echo -e "${RED}Your operating system is OpenWRT or ImmortalWRT. This section may not work for you and could potentially harm your device. It's better to choose option 0 to return to the main menu.${NC}"
+echo -e "${RED} If your operating system is OpenWRT or ImmortalWRT, this section may not function properly and could potentially harm your device. It is advisable to choose option 0 to return to the main menu. ${NC}"
     echo ""
     read -p "Press Enter to continue"
 fi
