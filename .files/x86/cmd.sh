@@ -38,7 +38,6 @@ OS_NAME=$(uname -o)
 # Show warning message if the OS is OpenWRT or ImmortalWRT
 echo -e "${RED} If your operating system is OpenWRT or ImmortalWRT, this section may not function properly and could potentially harm your device. It is advisable to choose option 0 to return to the main menu. ${NC}"
     echo ""
-    read -p "Press Enter to continue"
 
 # Prompt user to continue
 read -p "Press Enter to continue"
