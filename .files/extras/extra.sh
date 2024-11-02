@@ -34,6 +34,7 @@ while true; do
     echo -e "${RED}1. Run WiFi settings${NC}"
     echo -e "${CYAN}2. Install Extra tools for passwall for +512mb routers${NC}"
     echo -e "${GREEN}3. Cleanup memory${NC}"
+    echo -e "${YELLOW}4. Install CloudFlare Warp plus${NC}"
     echo -e "${BLUE}0. Return to main menu${NC}"
     echo -e "${RED}11. Exit${NC}"
 
@@ -52,6 +53,10 @@ while true; do
             echo -e "${YELLOW}Cleaning up memory...${NC}"
             rm -f /root/*.sh
             echo -e "${GREEN}All .sh files have been deleted.${NC}"
+            ;;
+        4)
+            echo -e "${GREEN}Running WiFi settings...${NC}"
+            rm -f warpplus.sh && wget https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/extras/warpplus.sh && chmod 777 warpplus.sh && sh warpplus.sh
             ;;
         0)
             echo -e "${CYAN}Returning to the main menu...${NC}"
