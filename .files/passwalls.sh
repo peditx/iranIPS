@@ -179,8 +179,7 @@ unzip -o hard.zip -d /
 
 cd
 
-########
-
+#########
 
 uci set passwall2.@global_forwarding[0]=global_forwarding
 uci set passwall2.@global_forwarding[0].tcp_no_redir_ports='disable'
@@ -189,10 +188,21 @@ uci set passwall2.@global_forwarding[0].tcp_redir_ports='1:65535'
 uci set passwall2.@global_forwarding[0].udp_redir_ports='1:65535'
 uci set passwall2.@global[0].remote_dns='8.8.4.4'
 
+# Delete unused rules
+uci delete passwall2.ProxyGame
+uci delete passwall2.GooglePlay
+uci delete passwall2.Netflix
+uci delete passwall2.OpenAI
+uci delete passwall2.Proxy
+uci delete passwall2.China
+uci delete passwall2.QUIC
+uci delete passwall2.UDP
+
 uci set passwall2.Direct=shunt_rules
 uci set passwall2.Direct.network='tcp,udp'
 uci set passwall2.Direct.remarks='IRAN'
-uci set passwall2.Direct.ip_list='0.0.0.0/8
+uci set passwall2.Direct.ip_list='geoip:ir
+0.0.0.0/8
 10.0.0.0/8
 100.64.0.0/10
 127.0.0.0/8
@@ -219,12 +229,116 @@ uci set passwall2.Direct.ip_list='0.0.0.0/8
 2002::/16
 fc00::/7
 fe80::/10
-ff00::/8
-geoip:ir'
+ff00::/8'
 uci set passwall2.Direct.domain_list='regexp:^.+\.ir$
-geosite:category-ir'
+geosite:category-ir
+kifpool.me'
+###pcdirect
+uci set passwall2.DirectGame=shunt_rules
+uci set passwall2.DirectGame.network='tcp,udp'
+uci set passwall2.DirectGame.remarks='PC-Direct'
+uci set passwall2.DirectGame.ip_list=''  # لیست IP خالی
+uci set passwall2.DirectGame.domain_list='nvidia.com
+youtube.com
+epicgames.com
+meta.com
+instagram.com
+facebook.com
+twitter.com
+tiktok.com
+spotify.com
+capcut.com
+adobe.com
+ubisoft.com
+google.com
+x.com
+bingx.com
+mexc.com
+openwrt.org
+twitch.tv
+asus.com
+byteoversea.com
+tiktokv.com
+xbox.com
+us.download.nvidia.com
+fcdn.co
+adobe.io
+cloudflare.com
+playstation.com
+tradingview.com
+reachthefinals.com
+midi-mixer.com
+google-analytics.com
+cloudflare-dns.com
+bingx.com
+activision.com
+biostar.com.tw
+aternos.me
+geforce.com
+gvt1.com
+ubi.com
+ea.com
+eapressportal.com
+myaccount.ea.com
+origin.com
+epicgames.dev
+rockstargames.com
+rockstarnorth.com
+googlevideo.com
+2ip.io
+telegram.com
+telegram.org
+safepal.com
+microsoft.com
+apps.microsoft.com
+live.com
+ytimg.com
+t.me
+whatsapp.com
+reddit.com
+pvp.net
+discord.com
+discord.gg
+discordapp.net
+discordapp.com
+bing.com
+discord.media
+approved-proxy.bc.ubisoft.com
+tlauncher.org
+aternos.host
+aternos.me
+aternos.org
+aternos.net
+aternos.com
+steamcommunity.com
+steam.com
+steampowered.com
+steamstatic.com
+chatgpt.com
+openai.com'
+#####pcdirect end
 
 uci set passwall2.myshunt.Direct='_direct'
+###pcdirect set
+uci set passwall2.myshunt.DirectGame='_direct'
+#  myshunt
+uci delete passwall2.myshunt
+
+#  MainShunt
+uci set passwall2.MainShunt=nodes
+uci set passwall2.MainShunt.remarks='MainShunt'
+uci set passwall2.MainShunt.type='Xray'
+uci set passwall2.MainShunt.protocol='_shunt'
+uci set passwall2.MainShunt.Direct='_direct'
+uci set passwall2.MainShunt.DirectGame='_default'
+
+# PC-Shunt
+uci set passwall2.PC_Shunt=nodes
+uci set passwall2.PC_Shunt.remarks='PC-Shunt'
+uci set passwall2.PC_Shunt.type='Xray'
+uci set passwall2.PC_Shunt.protocol='_shunt'
+uci set passwall2.PC_Shunt.Direct='_direct'
+uci set passwall2.PC_Shunt.DirectGame='_default'
 
 uci commit passwall2
 
@@ -247,7 +361,7 @@ my.irancell.ir'
 uci commit
 
 echo -e "${YELLOW}** Installation Completed ** ${ENDCOLOR}"
-echo -e "${MAGENTA} Made With Love By : AmirHossein ${ENDCOLOR}"
+echo -e "${MAGENTA} Made By : PeDitX ${ENDCOLOR}"
 
 /sbin/reload_config
 
