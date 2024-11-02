@@ -99,8 +99,7 @@ service warp start
 
 # Passwall configuration
 if service passwall status > /dev/null 2>&1; then
-    uci set passwall.MainShunt.Direct='_direct'
-    uci set passwall.MainShunt.DirectGame='_default'
+    # Check if passwall settings exist
     uci add passwall.Server
     uci set passwall.Server.@server[-1].type='socks'
     uci set passwall.Server.@server[-1].server='127.0.0.1'
@@ -109,13 +108,14 @@ if service passwall status > /dev/null 2>&1; then
     uci commit passwall
     echo "Passwall configuration updated successfully."
 elif service passwall2 status > /dev/null 2>&1; then
-    uci set passwall2.MainShunt.Direct='_direct'
-    uci set passwall2.MainShunt.DirectGame='_default'
+    # Check if passwall2 settings exist
     uci add passwall2.Server
     uci set passwall2.Server.@server[-1].type='socks'
     uci set passwall2.Server.@server[-1].server='127.0.0.1'
     uci set passwall2.Server.@server[-1].port='8086'
     uci set passwall2.Server.@server[-1].remarks='Warp-plus'
+    uci set passwall2.MainShunt.Direct='_direct'
+    uci set passwall2.MainShunt.DirectGame='_default'
     uci commit passwall2
     echo "Passwall2 configuration updated successfully."
 else
