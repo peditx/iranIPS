@@ -33,9 +33,9 @@ while true; do
     echo -e "${CYAN}Please select an option:${NC}"
     echo -e "${RED}1. Run WiFi settings${NC}"
     echo -e "${CYAN}2. Install Extra tools for passwall for +512mb routers${NC}"
-    echo -e "${GREEN}x. Cleanup memory${NC}"
-    echo -e "${BLUE}4. Return to main menu${NC}"
-    echo -e "${RED}0. Exit${NC}"
+    echo -e "${GREEN}3. Cleanup memory${NC}"
+    echo -e "${BLUE}0. Return to main menu${NC}"
+    echo -e "${RED}11. Exit${NC}"
 
     read -p "Your choice: " option
 
@@ -48,16 +48,16 @@ while true; do
             echo -e "${GREEN}Running WiFi settings...${NC}"
             rm -f expass.sh && wget https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/extras/expass.sh && chmod 777 expass.sh && sh expass.sh
             ;;
-        x)
+        3)
             echo -e "${YELLOW}Cleaning up memory...${NC}"
             rm -f /root/*.sh
             echo -e "${GREEN}All .sh files have been deleted.${NC}"
             ;;
-        4)
+        0)
             echo -e "${CYAN}Returning to the main menu...${NC}"
             rm -f ezp.sh && wget https://github.com/peditx/EZpasswall/raw/refs/heads/main/ezp.sh && chmod 777 ezp.sh && sh ezp.sh
             ;;
-        0)
+        11)
             echo -e "${RED}Exiting the program...${NC}"
             break
             ;;
