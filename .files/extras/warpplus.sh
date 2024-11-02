@@ -1,13 +1,8 @@
 #!/bin/bash
-
-# Color definitions
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
 MAGENTA='\033[0;35m'
-CYAN='\033[0;36m'
-GRAY='\033[0;37m'
 NC='\033[0m' # No Color
 
 echo "Running as root..."
@@ -27,7 +22,7 @@ echo -e "${MAGENTA}
  \▓▓       \▓▓▓▓▓▓▓\▓▓▓▓▓▓▓ \▓▓   \▓▓▓▓ \▓▓   \▓▓\▓▓         \▓▓▓▓      
                                                  
 
-                                W  A  R  P  P  L  U  S  on Passwall   
+                       W  A  R  P  P  L  U  S  on Passwall   
 ${NC}"
 
 # Determine system architecture
@@ -97,33 +92,37 @@ chmod 755 /etc/init.d/warp
 service warp enable
 service warp start
 
-# Passwall configuration
-if service passwall status > /dev/null 2>&1; then
-    # Check if passwall settings exist
-    uci add passwall.Server
-    uci set passwall.Server.@server[-1].type='socks'
-    uci set passwall.Server.@server[-1].server='127.0.0.1'
-    uci set passwall.Server.@server[-1].port='8086'
-    uci set passwall.Server.@server[-1].remarks='Warp-plus'
-    uci commit passwall
-    echo "Passwall configuration updated successfully."
-elif service passwall2 status > /dev/null 2>&1; then
-    # Check if passwall2 settings exist
-    uci add passwall2.Server
-    uci set passwall2.Server.@server[-1].type='socks'
-    uci set passwall2.Server.@server[-1].server='127.0.0.1'
-    uci set passwall2.Server.@server[-1].port='8086'
-    uci set passwall2.Server.@server[-1].remarks='Warp-plus'
+# Check if Passwall or Passwall2 is installed
+if service passwall2 status > /dev/null 2>&1; then
+    # Passwall2 is installed
+    uci set passwall2.WarpPlus=nodes
+    uci set passwall2.WarpPlus.remarks='Warp-Plus'
+    uci set passwall2.WarpPlus.type='Xray'
+    uci set passwall2.WarpPlus.protocol='socks'
+    uci set passwall2.WarpPlus.server='127.0.0.1'
+    uci set passwall2.WarpPlus.port='8086'
+
     # Adding the MainShunt settings
     uci set passwall2.MainShunt.Direct='_direct'
     uci set passwall2.MainShunt.DirectGame='_default'
+    
     uci commit passwall2
-    echo "Passwall2 configuration updated successfully."
+    echo -e "${GREEN}Passwall2 configuration updated successfully.${NC}"
+elif service passwall status > /dev/null 2>&1; then
+    # Passwall is installed
+    uci set passwall.WarpPlus=nodes
+    uci set passwall.WarpPlus.remarks='Warp-Plus'
+    uci set passwall.WarpPlus.type='Xray'
+    uci set passwall.WarpPlus.protocol='socks'
+    uci set passwall.WarpPlus.server='127.0.0.1'
+    uci set passwall.WarpPlus.port='8086'
+
+    uci commit passwall
+    echo -e "${GREEN}Passwall configuration updated successfully.${NC}"
 else
-    echo "Neither Passwall nor Passwall2 is installed. Skipping configuration."
+    echo -e "${RED}Neither Passwall nor Passwall2 is installed. Skipping configuration.${NC}"
 fi
 
-# Final messages
 echo -e "${YELLOW}** Installation Completed ** ${NC}"
 echo -e "${MAGENTA} Made By : PeDitX ${NC}"
 sleep 5
