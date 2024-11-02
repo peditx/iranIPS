@@ -39,9 +39,9 @@ clear
 # Detect system architecture
 ARCH=$(uname -m)
 if [[ $ARCH == "x86_64" ]]; then
-    WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/x86_64/warp-plus-x86_64.zip"
+    WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/linux-amd64/warp-plus_linux-amd64.zip"
 elif [[ $ARCH == "aarch64" ]]; then
-    WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/aarch64/warp-plus-aarch64.zip"
+    WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/linux-arm64/warp-plus_linux-arm64.zip"
 else
     echo -e "${RED}System architecture not supported.${NC}"
     exit 1
@@ -125,7 +125,6 @@ EOF
     fi
 
     echo -e "${GREEN}Warp-plus node and MainShunt settings added successfully, and Passwall 2 restarted.${NC}"
-    echo -e "${GREEN}Configuration complete. Please set the SOCKS server in Passwall to 127.0.0.1:8086.${NC}"
 else
     echo -e "${RED}Passwall 2 is not installed. Please install it before proceeding.${NC}"
     exit 1
