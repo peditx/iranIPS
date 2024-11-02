@@ -30,56 +30,54 @@ echo -e "${MAGENTA}
                                 W  A  R  P  P  L  U  S  on Passwall   
 ${NC}"
 
-# Check for root user
-if [[ $EUID -ne 0 ]]; then
-    echo -e "${RED}This script must be run as root. Exiting...${NC}"
-    exit 1
-fi
-
-echo -e "${GREEN}Running as root...${NC}"
-sleep 2
-clear
-
-# Detect system architecture
+# Determine system architecture
 ARCH=$(uname -m)
-if [[ $ARCH == "x86_64" ]]; then
-    WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/linux-amd64/warp-plus_linux-amd64.zip"
-elif [[ $ARCH == "aarch64" ]]; then
-    WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/linux-arm64/warp-plus_linux-arm64.zip"
-else
-    echo -e "${RED}System architecture not supported.${NC}"
-    exit 1
-fi
+case $ARCH in
+    x86_64)
+        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-amd64.zip"
+        ;;
+    aarch64)
+        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-arm64.zip"
+        ;;
+    armv7l)
+        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-arm7.zip"
+        ;;
+    mips)
+        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-mips.zip"
+        ;;
+    mips64)
+        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-mips64.zip"
+        ;;
+    mips64le)
+        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-mips64le.zip"
+        ;;
+    riscv64)
+        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-riscv64.zip"
+        ;;
+    *)
+        echo -e "${RED}System architecture not supported.${NC}"
+        exit 1
+        ;;
+esac
 
-# Download and extract warp
+# Download and extract warp file
 cd /tmp || exit
-echo -e "${CYAN}Downloading Warp...${NC}"
 wget -O warp.zip "$WARP_URL"
-if [[ $? -ne 0 ]]; then
-    echo -e "${RED}Failed to download Warp. Exiting...${NC}"
-    exit 1
-fi
+unzip warp.zip
 
-echo -e "${CYAN}Extracting Warp...${NC}"
-unzip -o warp.zip
-if [[ $? -ne 0 ]]; then
-    echo -e "${RED}Failed to extract Warp. Exiting...${NC}"
-    exit 1
-fi
-
-# Rename and move the warp executable to /usr/bin
+# Rename and copy the warp executable to /usr/bin
 mv warp-plus warp
 cp warp /usr/bin/
 chmod +x /usr/bin/warp
 
-# Create warp init script in /etc/init.d
+# Create the init script for warp in /etc/init.d
 cat << 'EOF' > /etc/init.d/warp
 #!/bin/sh /etc/rc.common
-
+ 
 START=91
 USE_PROCD=1
 PROG=/usr/bin/warp
-
+ 
 start_service() {
   args=""
   args="$args -b 127.0.0.1:8086 --scan"
@@ -92,48 +90,39 @@ start_service() {
 }
 EOF
 
-# Set permissions for init.d script
+# Set permissions for the init.d script
 chmod 755 /etc/init.d/warp
 
-# Enable and start warp service
-echo -e "${GREEN}Enabling and starting Warp service...${NC}"
+# Enable and start the warp service
 service warp enable
 service warp start
 
-# Check if Passwall 2 is installed
-if opkg list-installed | grep -q passwall; then
-    echo -e "${GREEN}Passwall 2 is installed. Proceeding with configuration...${NC}"
-
-    # Add Warp-plus node and MainShunt settings to Passwall 2
-    uci batch <<EOF
-set passwall2.@nodes[-1]=node
-set passwall2.@nodes[-1].type='Socks'
-set passwall2.@nodes[-1].core='Xray'
-set passwall2.@nodes[-1].address='127.0.0.1'
-set passwall2.@nodes[-1].port='8086'
-set passwall2.@nodes[-1].remarks='Warp-plus'
-set passwall2.MainShunt.Direct='_direct'
-set passwall2.MainShunt.DirectGame='_default'
-EOF
-
-    # Commit settings and restart Passwall 2
+# Passwall configuration
+if service passwall status > /dev/null 2>&1; then
+    uci set passwall.MainShunt.Direct='_direct'
+    uci set passwall.MainShunt.DirectGame='_default'
+    uci add passwall.Server
+    uci set passwall.Server.@server[-1].type='socks'
+    uci set passwall.Server.@server[-1].server='127.0.0.1'
+    uci set passwall.Server.@server[-1].port='8086'
+    uci set passwall.Server.@server[-1].remarks='Warp-plus'
+    uci commit passwall
+    echo "Passwall configuration updated successfully."
+elif service passwall2 status > /dev/null 2>&1; then
+    uci set passwall2.MainShunt.Direct='_direct'
+    uci set passwall2.MainShunt.DirectGame='_default'
+    uci add passwall2.Server
+    uci set passwall2.Server.@server[-1].type='socks'
+    uci set passwall2.Server.@server[-1].server='127.0.0.1'
+    uci set passwall2.Server.@server[-1].port='8086'
+    uci set passwall2.Server.@server[-1].remarks='Warp-plus'
     uci commit passwall2
-
-    # Restart Passwall service
-    if [ -f /etc/init.d/passwall2 ]; then
-        echo -e "${GREEN}Restarting Passwall 2...${NC}"
-        /etc/init.d/passwall2 restart
-    else
-        echo -e "${RED}Passwall 2 init script not found. Please check the installation.${NC}"
-        exit 1
-    fi
-
-    echo -e "${GREEN}Warp-plus node and MainShunt settings added successfully, and Passwall 2 restarted.${NC}"
+    echo "Passwall2 configuration updated successfully."
 else
-    echo -e "${RED}Passwall 2 is not installed. Please install it before proceeding.${NC}"
-    exit 1
+    echo "Neither Passwall nor Passwall2 is installed. Skipping configuration."
 fi
 
-echo -e "${YELLOW}** Installation Completed ** ${ENDCOLOR}"
-echo -e "${MAGENTA} Made By : PeDitX ${ENDCOLOR}"
+# Final messages
+echo -e "${YELLOW}** Installation Completed ** ${NC}"
+echo -e "${MAGENTA} Made By : PeDitX ${NC}"
 sleep 5
