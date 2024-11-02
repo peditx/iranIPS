@@ -22,7 +22,7 @@ echo -e "${MAGENTA}
  \▓▓       \▓▓▓▓▓▓▓\▓▓▓▓▓▓▓ \▓▓   \▓▓▓▓ \▓▓   \▓▓\▓▓         \▓▓▓▓      
                                                  
 
-                       W  A  R  P  P  L  U  S  on Passwall   
+                                W  A  R  P  P  L  U  S  on Passwall   
 ${NC}"
 
 # Determine system architecture
