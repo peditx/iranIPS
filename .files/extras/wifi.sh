@@ -29,10 +29,10 @@ echo -e "${MAGENTA}
 ${NC}"
 
 # Get WiFi name from the user
-read -p "${CYAN}Please enter the new WiFi name (SSID): ${NC}" new_ssid
+read -p "Please enter the new WiFi name (SSID): " new_ssid
 
 # Get WiFi password from the user
-read -p "${CYAN}Please enter the new WiFi password: ${NC}" new_password
+read -p "Please enter the new WiFi password: " new_password
 
 # Path to the WiFi configuration file
 wifi_config="/etc/config/wireless"
