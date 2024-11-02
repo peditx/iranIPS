@@ -114,6 +114,7 @@ elif service passwall2 status > /dev/null 2>&1; then
     uci set passwall2.Server.@server[-1].server='127.0.0.1'
     uci set passwall2.Server.@server[-1].port='8086'
     uci set passwall2.Server.@server[-1].remarks='Warp-plus'
+    # Adding the MainShunt settings
     uci set passwall2.MainShunt.Direct='_direct'
     uci set passwall2.MainShunt.DirectGame='_default'
     uci commit passwall2
