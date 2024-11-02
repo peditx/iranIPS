@@ -22,7 +22,7 @@ echo -e "${MAGENTA}
  \▓▓       \▓▓▓▓▓▓▓\▓▓▓▓▓▓▓ \▓▓   \▓▓▓▓ \▓▓   \▓▓\▓▓         \▓▓▓▓      
                                                  
 
-                                W  A  R  P  P  L  U  S  on Passwall   
+                       W  A  R  P  P  L  U  S  on Passwall   
 ${NC}"
 
 # Determine system architecture
@@ -101,11 +101,13 @@ if service passwall2 status > /dev/null 2>&1; then
     uci set passwall2.WarpPlus.protocol='socks'
     uci set passwall2.WarpPlus.server='127.0.0.1'
     uci set passwall2.WarpPlus.port='8086'
+    uci set passwall2.WarpPlus.address='127.0.0.1'
+    uci set passwall2.WarpPlus.tls='0'
+    uci set passwall2.WarpPlus.transport='tcp'
+    uci set passwall2.WarpPlus.tcp_guise='none'
+    uci set passwall2.WarpPlus.tcpMptcp='0'
+    uci set passwall2.WarpPlus.tcpNoDelay='0'
 
-    # Adding the MainShunt settings
-    uci set passwall2.MainShunt.Direct='_direct'
-    uci set passwall2.MainShunt.DirectGame='_default'
-    
     uci commit passwall2
     echo -e "${GREEN}Passwall2 configuration updated successfully.${NC}"
 elif service passwall status > /dev/null 2>&1; then
@@ -116,6 +118,12 @@ elif service passwall status > /dev/null 2>&1; then
     uci set passwall.WarpPlus.protocol='socks'
     uci set passwall.WarpPlus.server='127.0.0.1'
     uci set passwall.WarpPlus.port='8086'
+    uci set passwall.WarpPlus.address='127.0.0.1'
+    uci set passwall.WarpPlus.tls='0'
+    uci set passwall.WarpPlus.transport='tcp'
+    uci set passwall.WarpPlus.tcp_guise='none'
+    uci set passwall.WarpPlus.tcpMptcp='0'
+    uci set passwall.WarpPlus.tcpNoDelay='0'
 
     uci commit passwall
     echo -e "${GREEN}Passwall configuration updated successfully.${NC}"
