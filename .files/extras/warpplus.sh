@@ -130,3 +130,7 @@ else
     echo -e "${RED}Passwall 2 is not installed. Please install it before proceeding.${NC}"
     exit 1
 fi
+
+echo -e "${YELLOW}** Installation Completed ** ${ENDCOLOR}"
+echo -e "${MAGENTA} Made By : PeDitX ${ENDCOLOR}"
+sleep 5
