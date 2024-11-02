@@ -58,11 +58,11 @@ esac
 # Download and extract warp file
 cd /tmp || exit
 wget -O warp.zip "$WARP_URL"
-unzip warp.zip
+unzip -o warp.zip
 
 # Rename and copy the warp executable to /usr/bin
-mv warp-plus warp
-cp warp /usr/bin/
+mv -f warp-plus warp
+cp -f warp /usr/bin/
 chmod +x /usr/bin/warp
 
 # Create the init script for warp in /etc/init.d
