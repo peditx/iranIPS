@@ -131,6 +131,26 @@ else
     echo -e "${RED}Neither Passwall nor Passwall2 is installed. Skipping configuration.${NC}"
 fi
 
+# Install watchcat
+echo "Installing watchcat..."
+if opkg install watchcat; then
+  echo "watchcat has been installed successfully."
+else
+  echo "Failed to install watchcat."
+  exit 1
+fi
+
+# Install luci-app-watchcat
+echo "Installing luci-app-watchcat..."
+if opkg install luci-app-watchcat; then
+  echo "luci-app-watchcat has been installed successfully."
+else
+  echo "Failed to install luci-app-watchcat."
+  exit 1
+fi
+
+echo "Installation completed."
+
 echo -e "${YELLOW}** Installation Completed ** ${NC}"
 echo -e "${MAGENTA} Made By : PeDitX ${NC}"
 sleep 5
