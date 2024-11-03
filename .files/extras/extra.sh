@@ -60,7 +60,7 @@ while true; do
             ;;
         0)
             echo -e "${CYAN}Returning to the main menu...${NC}"
-            rm -f ezp.sh && wget https://github.com/peditx/EZpasswall/raw/refs/heads/main/ezp.sh && chmod 777 ezp.sh && sh ezp.sh
+            rm -f ezp.sh && wget -qO - https://raw.githubusercontent.com/peditx/EZpasswall/refs/heads/main/ezp.b64 | awk '{print $1}' | base64 -d > ezp.sh && chmod +x ezp.sh && sh ezp.sh
             ;;
         11)
             echo -e "${RED}Exiting the program...${NC}"
