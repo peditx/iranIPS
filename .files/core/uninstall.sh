@@ -25,13 +25,31 @@ echo -e "${MAGENTA}
 | ▓▓      \\▓▓     \\ ▓▓    ▓▓ ▓▓  \\▓▓  ▓▓ ▓▓  | ▓▓ ▓▓        \\▓▓  ▓▓     
  \\▓▓       \\▓▓▓▓▓▓▓\\▓▓▓▓▓▓▓ \\▓▓   \\▓▓▓▓ \\▓▓   \\▓▓\\▓▓         \\▓▓▓▓      
                                                  
-                                    E  X  T  R  A   T  O  O  L  S 
+                                               Uninstall   T  O  O  L  S 
 ${NC}"
 
 # Uninstall watchcat
 echo -e "${BLUE}Uninstalling watchcat...${NC}"
 if opkg list-installed | grep -q "^watchcat"; then
   opkg remove watchcat
+  echo -e "${GREEN}watchcat has been removed successfully.${NC}"
+else
+  echo -e "${YELLOW}watchcat is not installed.${NC}"
+fi
+
+# Uninstall v2raya
+echo -e "${BLUE}Uninstalling v2rayA...${NC}"
+if opkg list-installed | grep -q "^luci-app-v2raya"; then
+  opkg remove luci-app-v2raya
+  echo -e "${GREEN}watchcat has been removed successfully.${NC}"
+else
+  echo -e "${YELLOW}watchcat is not installed.${NC}"
+fi
+
+# Uninstall wol
+echo -e "${BLUE}Uninstalling Wol...${NC}"
+if opkg list-installed | grep -q "^luci-app-wol"; then
+  opkg remove luci-app-wol
   echo -e "${GREEN}watchcat has been removed successfully.${NC}"
 else
   echo -e "${YELLOW}watchcat is not installed.${NC}"
