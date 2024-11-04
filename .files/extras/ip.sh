@@ -69,7 +69,7 @@ while true; do
             ;;
         0)
             echo -e "${BLUE}Returning to main menu...${NC}"
-            /path/to/ezp.sh
+            extra.sh
             exit 0
             ;;
         *)
@@ -81,6 +81,6 @@ while true; do
     /etc/init.d/network restart
 
     echo -e "${BLUE}Returning to main menu...${NC}"
-    /path/to/ezp.sh
+    extra.sh
     exit 0
 done
