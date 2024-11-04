@@ -12,7 +12,7 @@ NC='\033[0m' # No Color
 
 
 #Download resize Script
-curl -O https://raw.githubusercontent.com/peditx/easywrt/36d3bf205b46c1d7b17bfbc7c2973b7a54887c39/op/resize.sh
+curl -O https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/resize.sh
 
 # Clear the terminal
 clear
@@ -62,11 +62,11 @@ while true; do
 
     # Declare an associative array for script names and download URLs
     declare -A scripts
-    scripts[1]="PeDitXrt.sh https://raw.githubusercontent.com/peditx/easywrt/5959810386d472eabeeba495f1798fdab658363d/op/PeDitXrt.sh"
-    scripts[2]="Mikrotik.sh https://raw.githubusercontent.com/peditx/easywrt/5959810386d472eabeeba495f1798fdab658363d/op/Mikrotik.sh"
-    scripts[3]="Openwrt.sh https://raw.githubusercontent.com/peditx/easywrt/5959810386d472eabeeba495f1798fdab658363d/op/Openwrt.sh"
-    scripts[4]="Immortalwrt.sh https://raw.githubusercontent.com/peditx/easywrt/5959810386d472eabeeba495f1798fdab658363d/op/Immortalwrt.sh"
-    scripts[5]="Custom.sh https://raw.githubusercontent.com/peditx/easywrt/5959810386d472eabeeba495f1798fdab658363d/op/Custom.sh"
+    scripts[1]="PeDitXrt.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/PeDitXrt.sh"
+    scripts[2]="Mikrotik.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/Mikrotik.sh"
+    scripts[3]="Openwrt.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/Openwrt.sh"
+    scripts[4]="Immortalwrt.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/Immortalwrt.sh"
+    scripts[5]="Custom.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/Custom.sh"
 
     # Check if the choice is valid and handle the corresponding action
     if [[ "$choice" =~ ^[0-5]$ ]]; then
