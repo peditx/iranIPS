@@ -10,8 +10,24 @@ CYAN='\033[0;36m'
 GRAY='\033[0;37m'
 NC='\033[0m' # No Color
 
+# Check for root privileges
+if [[ $EUID -ne 0 ]]; then
+    echo -e "${RED}This script must be run as root. Please use 'sudo'.${NC}"
+    exit 1
+fi
 
-#Download resize Script
+# Check if curl and wget are installed
+if ! command -v curl &> /dev/null; then
+    echo -e "${RED}curl is not installed. Installing it now...${NC}"
+    apt update && apt install -y curl
+fi
+
+if ! command -v wget &> /dev/null; then
+    echo -e "${RED}wget is not installed. Installing it now...${NC}"
+    apt update && apt install -y wget
+fi
+
+# Download resize Script
 curl -O https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/resize.sh
 
 # Clear the terminal
@@ -41,7 +57,7 @@ OS_NAME=$(uname -o)
 
 # Show warning message if the OS is OpenWRT or ImmortalWRT
 echo -e "${RED} If your operating system is OpenWRT or ImmortalWRT, this section may not function properly and could potentially harm your device. It is advisable to choose option 0 to return to the main menu. ${NC}"
-    echo ""
+echo ""
 
 # Prompt user to continue
 read -p "Press Enter to continue"
@@ -60,22 +76,23 @@ echo ""
 while true; do
     read -p "Enter your choice (0-5): " choice
 
-    # Declare an associative array for script names and download URLs
-    declare -A scripts
-    scripts[1]="PeDitXrt.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/PeDitXrt.sh"
-    scripts[2]="Mikrotik.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/Mikrotik.sh"
-    scripts[3]="Openwrt.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/Openwrt.sh"
-    scripts[4]="Immortalwrt.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/Immortalwrt.sh"
-    scripts[5]="Custom.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/Custom.sh"
-
     # Check if the choice is valid and handle the corresponding action
-    if [[ "$choice" =~ ^[0-5]$ ]]; then
-        if [[ "$choice" -eq 0 ]]; then
+    case "$choice" in
+        0)
             echo -e "${CYAN}Running cleanup and downloading ezp.sh...${NC}"
-            rm -f ezp.sh && wget https://github.com/peditx/EZpasswall/raw/refs/heads/main/ezp.sh && chmod 777 ezp.sh && sh ezp.sh
+            rm -f ezp.sh && wget https://github.com/peditx/EZpasswall/raw/refs/heads/main/ezp.sh && chmod +x ezp.sh && ./ezp.sh
             break
-        else
-            script_info=${scripts[$choice]}
+            ;;
+        1|2|3|4|5)
+            script_info=""
+            case "$choice" in
+                1) script_info="PeDitXrt.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/PeDitXrt.sh" ;;
+                2) script_info="Mikrotik.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/Mikrotik.sh" ;;
+                3) script_info="Openwrt.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/Openwrt.sh" ;;
+                4) script_info="Immortalwrt.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/Immortalwrt.sh" ;;
+                5) script_info="Custom.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/Custom.sh" ;;
+            esac
+
             script_name=$(echo $script_info | cut -d ' ' -f 1)
             script_url=$(echo $script_info | cut -d ' ' -f 2)
 
@@ -92,10 +109,11 @@ while true; do
                 echo -e "${RED}Error: $script_name not found after download.${NC}"
             fi
             break
-        fi
-    else
-        echo -e "${MAGENTA}Invalid choice. Please enter a number between 0 and 5.${NC}"
-    fi
+            ;;
+        *)
+            echo -e "${MAGENTA}Invalid choice. Please enter a number between 0 and 5.${NC}"
+            ;;
+    esac
 done
 
 exit 0
