@@ -63,7 +63,7 @@ echo -e "${MAGENTA}Made By PeDitX${NC}"
 sleep 5
 
 # Prompt user for continuation
-read -p "${CYAN}Press Enter to continue or press 0 to exit: ${NC}" user_input
+read -p "Press Enter to continue or press 0 to exit: " user_input
 
 if [[ "$user_input" == "0" ]]; then
     echo -e "${YELLOW}Exiting script...${NC}"
