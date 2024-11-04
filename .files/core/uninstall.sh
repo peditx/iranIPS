@@ -48,8 +48,8 @@ fi
 
 # Uninstall passwall if installed
 echo -e "${BLUE}Uninstalling passwall...${NC}"
-if opkg list-installed | grep -q "^passwall"; then
-  opkg remove passwall
+if opkg list-installed | grep -q "^luci-app-passwall"; then
+  opkg remove luci-app-passwall
   echo -e "${GREEN}passwall has been removed successfully.${NC}"
 else
   echo -e "${YELLOW}passwall is not installed.${NC}"
@@ -57,8 +57,8 @@ fi
 
 # Uninstall passwall2 if installed
 echo -e "${BLUE}Uninstalling passwall2...${NC}"
-if opkg list-installed | grep -q "^passwall2"; then
-  opkg remove passwall2
+if opkg list-installed | grep -q "^luci-app-passwall2"; then
+  opkg remove luci-app-passwall2
   echo -e "${GREEN}passwall2 has been removed successfully.${NC}"
 else
   echo -e "${YELLOW}passwall2 is not installed.${NC}"
