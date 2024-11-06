@@ -12,13 +12,13 @@ NC='\033[0m' # No Color
 
 # Check for root privileges
 if [[ $EUID -ne 0 ]]; then
-    echo "${RED}This script must be run as root. Please use 'sudo'.${NC}"
+    printf "${RED}This script must be run as root. Please use 'sudo'.${NC}\n"
     exit 1
 fi
 
 # Check if wget is installed
 if ! command -v wget &> /dev/null; then
-    echo "${RED}wget is not installed. Installing it now...${NC}"
+    printf "${RED}wget is not installed. Installing it now...${NC}\n"
     apt update && apt install -y wget
 fi
 
@@ -29,7 +29,7 @@ wget https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/resize.
 clear
 
 # Display the banner in magenta
-echo "${MAGENTA}
+printf "${MAGENTA}
  _______           _______  __   __     __    __            __          
 |       \         |       \|  \ |  \   |  \  |  \          |  \         
 | ▓▓▓▓▓▓▓\ ______ | ▓▓▓▓▓▓▓\\▓▓_| ▓▓_  | ▓▓  | ▓▓ ______  _| ▓▓_        
@@ -41,32 +41,29 @@ echo "${MAGENTA}
  \▓▓       \▓▓▓▓▓▓▓\▓▓▓▓▓▓▓ \▓▓   \▓▓▓▓ \▓▓   \▓▓\▓▓         \▓▓▓▓      
                                                 
                                                 X86  T  O  O  L  S
-${NC}"
+${NC}\n"
 
 # Welcome message
-echo "${GREEN}Welcome to the installer!${NC}"
-echo ""
+printf "${GREEN}Welcome to the installer!${NC}\n\n"
 
 # Check the system OS
 OS_NAME=$(uname -o)
 
 # Show warning message if the OS is OpenWRT or ImmortalWRT
-echo "${RED}If your operating system is OpenWRT or ImmortalWRT, this section may not function properly and could potentially harm your device. It is advisable to choose option 0 to return to the main menu.${NC}"
-echo ""
+printf "${RED}If your operating system is OpenWRT or ImmortalWRT, this section may not function properly and could potentially harm your device. It is advisable to choose option 0 to return to the main menu.${NC}\n\n"
 
 # Prompt user to continue
-echo "Press Enter to continue"
+printf "Press Enter to continue"
 read -r
 
 # Show options in yellow
-echo "${YELLOW}Please select your OS you need to install:${NC}"
-echo "${RED}1-${NC} ${MAGENTA}PeDitXrt${NC}"
-echo "${RED}2-${NC} ${CYAN}MikroTik${NC}"
-echo "${RED}3-${NC} ${GREEN}OpenWRT${NC}"
-echo "${RED}4-${NC} ${YELLOW}ImmortalWRT${NC}"
-echo "${RED}5-${NC} ${BLUE}Custom Link${NC}"
-echo "${RED}0-${NC} Back to main Menu${NC}"
-echo ""
+printf "${YELLOW}Please select your OS you need to install:${NC}\n"
+printf "${RED}1-${NC} ${MAGENTA}PeDitXrt${NC}\n"
+printf "${RED}2-${NC} ${CYAN}MikroTik${NC}\n"
+printf "${RED}3-${NC} ${GREEN}OpenWRT${NC}\n"
+printf "${RED}4-${NC} ${YELLOW}ImmortalWRT${NC}\n"
+printf "${RED}5-${NC} ${BLUE}Custom Link${NC}\n"
+printf "${RED}0-${NC} Back to main Menu${NC}\n\n"
 
 # Loop until a valid choice is made
 while true; do
@@ -75,7 +72,7 @@ while true; do
     # Check if the choice is valid and handle the corresponding action
     case "$choice" in
         0)
-            echo "${CYAN}Running cleanup and downloading ezp.sh...${NC}"
+            printf "${CYAN}Running cleanup and downloading ezp.sh...${NC}\n"
             rm -f ezp.sh && wget https://github.com/peditx/EZpasswall/raw/refs/heads/main/ezp.sh && chmod +x ezp.sh && ./ezp.sh
             break
             ;;
@@ -92,7 +89,7 @@ while true; do
             script_name=$(echo $script_info | cut -d ' ' -f 1)
             script_url=$(echo $script_info | cut -d ' ' -f 2)
 
-            echo "${CYAN}Downloading $script_name from $script_url...${NC}"
+            printf "${CYAN}Downloading $script_name from $script_url...${NC}\n"
 
             # Download the script using wget
             wget "$script_url" -O "$script_name"
@@ -102,12 +99,12 @@ while true; do
                 chmod +x "$script_name"
                 ./"$script_name"
             else
-                echo "${RED}Error: $script_name not found after download.${NC}"
+                printf "${RED}Error: $script_name not found after download.${NC}\n"
             fi
             break
             ;;
         *)
-            echo "${MAGENTA}Invalid choice. Please enter a number between 0 and 5.${NC}"
+            printf "${MAGENTA}Invalid choice. Please enter a number between 0 and 5.${NC}\n"
             ;;
     esac
 done
