@@ -69,7 +69,7 @@ printf "${RED}2-${NC} ${CYAN}MikroTik${NC}\n"
 printf "${RED}3-${NC} ${GREEN}OpenWRT${NC}\n"
 printf "${RED}4-${NC} ${YELLOW}ImmortalWRT${NC}\n"
 printf "${RED}5-${NC} ${BLUE}Custom Link${NC}\n"
-printf "${RED}0-${NC} Back to main Menu${NC}\n\n"
+printf "${RED}0-${NC} Exit${NC}\n\n"
 
 # Loop until a valid choice is made
 while true; do
@@ -78,9 +78,8 @@ while true; do
     # Check if the choice is valid and handle the corresponding action
     case "$choice" in
         0)
-            printf "${CYAN}Running cleanup and downloading ezp.sh...${NC}\n"
-            rm -f ezp.sh && wget https://github.com/peditx/EZpasswall/raw/refs/heads/main/ezp.sh && chmod +x ezp.sh && ./ezp.sh
-            break
+            printf "${CYAN}Exiting the installer...${NC}\n"
+            exit 0
             ;;
         1|2|3|4|5)
             script_info=""
