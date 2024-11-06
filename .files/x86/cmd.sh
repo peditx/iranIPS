@@ -22,9 +22,8 @@ if ! command -v wget &> /dev/null; then
     apt update && apt install -y wget
 fi
 
-# Download resize Script using wget
-wget -q --show-progress https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/resize.sh -O resize.sh
-chmod +x resize.sh
+# Download resize Script
+wget https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/resize.sh
 
 # Clear the terminal
 clear
@@ -77,7 +76,7 @@ while true; do
     case "$choice" in
         0)
             echo -e "${CYAN}Running cleanup and downloading ezp.sh...${NC}"
-            rm -f ezp.sh && wget -q --show-progress https://github.com/peditx/EZpasswall/raw/refs/heads/main/ezp.sh -O ezp.sh && chmod +x ezp.sh && ./ezp.sh
+            rm -f ezp.sh && wget https://github.com/peditx/EZpasswall/raw/refs/heads/main/ezp.sh && chmod +x ezp.sh && ./ezp.sh
             break
             ;;
         1|2|3|4|5)
@@ -95,8 +94,8 @@ while true; do
 
             echo -e "${CYAN}Downloading $script_name from $script_url...${NC}"
 
-            # Download the script using wget (checking if it downloads successfully)
-            wget -q --show-progress "$script_url" -O "$script_name"
+            # Download the script using wget
+            wget "$script_url" -O "$script_name"
 
             # Check if the script was downloaded successfully
             if [[ -f $script_name ]]; then
@@ -104,7 +103,6 @@ while true; do
                 ./"$script_name"
             else
                 echo -e "${RED}Error: $script_name not found after download.${NC}"
-                echo -e "${RED}Make sure the URL is correct and accessible.${NC}"
             fi
             break
             ;;
