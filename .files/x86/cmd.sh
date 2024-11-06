@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Check if resize.sh exists in the current directory and remove it if it does
+if [[ -f "resize.sh" ]]; then
+    printf "Removing existing resize.sh...\n"
+    rm -f "resize.sh"
+fi
+
 # Define color codes
 RED='\033[0;31m'
 GREEN='\033[0;32m'
