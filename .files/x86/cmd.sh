@@ -16,7 +16,7 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
-# Check if curl and wget are installed
+# Check if wget is installed
 if ! command -v wget &> /dev/null; then
     echo -e "${RED}wget is not installed. Installing it now...${NC}"
     apt update && apt install -y wget
@@ -56,7 +56,8 @@ echo -e "${RED} If your operating system is OpenWRT or ImmortalWRT, this section
 echo ""
 
 # Prompt user to continue
-read -p "Press Enter to continue"
+echo -e "Press Enter to continue"
+read -r
 
 # Show options in yellow
 echo -e "${YELLOW}Please select your OS you need to install:${NC}"
