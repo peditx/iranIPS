@@ -9,10 +9,10 @@ pip3 install speedtest-cli
 mkdir -p /www/nettools-icon
 wget -O /www/nettools-icon/nettools.png "https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/ui/button/vecteezy_network-sharing-circle-logo-icon_12986609.png"
 
-# Create necessary directories for Lua controller files
-mkdir -p /usr/lib/lua/luci/view/nettools
+# Set permissions for the folder
+chmod -R 755 /www/nettools-icon
 
-# Create Lua controller file for Nettools
+# Create Lua controller files
 cat << 'EOF' > /usr/lib/lua/luci/controller/nettools.lua
 module("luci.controller.nettools", package.seeall)
 
@@ -27,6 +27,9 @@ function index()
     entry({"admin", "nettools", "speedtest"}, template("nettools/speedtest"), _("Speedtest"), 10)
 end
 EOF
+
+# Set permissions for controller files
+chmod -R 755 /usr/lib/lua/luci/controller
 
 # Create Speedtest HTML template
 cat << 'EOF' > /usr/lib/lua/luci/view/nettools/speedtest.htm
@@ -88,9 +91,12 @@ cat << 'EOF' > /usr/lib/lua/luci/view/nettools/speedtest.htm
 <%+footer%>
 EOF
 
-# Create script to run speedtest-cli and calculate jitter
+# Set permissions for view files
+chmod -R 755 /usr/lib/lua/luci/view/nettools
+
+# Create Lua script to handle speedtest
 cat << 'EOF' > /usr/lib/lua/luci/controller/speedtest.lua
-module("luci.controller.nettools.speedtest", package.seeall)
+module("luci.controller.speedtest", package.seeall)
 
 function index()
     if luci.http.formvalue("start_speedtest") then
@@ -137,9 +143,8 @@ function index()
 end
 EOF
 
-# Set permissions for the created directories and files
-chmod -R 755 /usr/lib/lua/luci/controller/
-chmod -R 755 /www/nettools-icon
+# Set permissions for Lua controller scripts
+chmod -R 755 /usr/lib/lua/luci/controller
 
 # Restart uhttpd to apply changes
 /etc/init.d/uhttpd restart
