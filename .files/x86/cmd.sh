@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Check if resize.sh exists in the current directory and remove it if it does
-if [[ -f "resize.sh" ]]; then
+if [ -f "resize.sh" ]; then
     printf "Removing existing resize.sh...\n"
     rm -f "resize.sh"
 fi
@@ -17,7 +17,7 @@ GRAY='\033[0;37m'
 NC='\033[0m' # No Color
 
 # Check for root privileges
-if [[ $EUID -ne 0 ]]; then
+if [ "$EUID" -ne 0 ]; then
     printf "${RED}This script must be run as root. Please use 'sudo'.${NC}\n"
     exit 1
 fi
@@ -45,7 +45,7 @@ printf "${MAGENTA}
 | ▓▓     | ▓▓▓▓▓▓▓▓ ▓▓__/ ▓▓ ▓▓ | ▓▓|  \  ▓▓ \▓▓\ ▓▓       | ▓▓|  \     
 | ▓▓      \▓▓     \ ▓▓    ▓▓ ▓▓  \▓▓  ▓▓ ▓▓  | ▓▓ ▓▓        \▓▓  ▓▓     
  \▓▓       \▓▓▓▓▓▓▓\▓▓▓▓▓▓▓ \▓▓   \▓▓▓▓ \▓▓   \▓▓\▓▓         \▓▓▓▓      
-                                                
+                                                  
                                                 X86  T  O  O  L  S
 ${NC}\n"
 
@@ -100,7 +100,7 @@ while true; do
             wget "$script_url" -O "$script_name"
 
             # Check if the script was downloaded successfully
-            if [[ -f $script_name ]]; then
+            if [ -f "$script_name" ]; then
                 chmod +x "$script_name"
                 ./"$script_name"
             else
