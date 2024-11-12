@@ -7,8 +7,8 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 # Install python3 and pip if not installed
-opkg update
-opkg install python3 python3-pip
+#opkg update
+#opkg install python3 python3-pip
 
 # Install speedtest-cli using pip
 pip3 install speedtest-cli
