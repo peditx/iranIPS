@@ -9,10 +9,14 @@ pip3 install speedtest-cli
 mkdir -p /www/nettools-icon
 wget -O /www/nettools-icon/nettools.png "https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/ui/button/vecteezy_network-sharing-circle-logo-icon_12986609.png"
 
-# Set permissions for the folder
+# Set permissions for the icon folder
 chmod -R 755 /www/nettools-icon
 
-# Create Lua controller files
+# Create necessary directories for Lua controller files
+mkdir -p /usr/lib/lua/luci/controller
+chmod -R 755 /usr/lib/lua/luci/controller
+
+# Create Lua controller file for Nettools
 cat << 'EOF' > /usr/lib/lua/luci/controller/nettools.lua
 module("luci.controller.nettools", package.seeall)
 
@@ -27,9 +31,6 @@ function index()
     entry({"admin", "nettools", "speedtest"}, template("nettools/speedtest"), _("Speedtest"), 10)
 end
 EOF
-
-# Set permissions for controller files
-chmod -R 755 /usr/lib/lua/luci/controller
 
 # Create Speedtest HTML template
 cat << 'EOF' > /usr/lib/lua/luci/view/nettools/speedtest.htm
@@ -91,10 +92,7 @@ cat << 'EOF' > /usr/lib/lua/luci/view/nettools/speedtest.htm
 <%+footer%>
 EOF
 
-# Set permissions for view files
-chmod -R 755 /usr/lib/lua/luci/view/nettools
-
-# Create Lua script to handle speedtest
+# Create Lua controller for speedtest
 cat << 'EOF' > /usr/lib/lua/luci/controller/speedtest.lua
 module("luci.controller.speedtest", package.seeall)
 
@@ -143,8 +141,8 @@ function index()
 end
 EOF
 
-# Set permissions for Lua controller scripts
-chmod -R 755 /usr/lib/lua/luci/controller
+# Set permissions for the Lua controller file
+chmod -R 755 /usr/lib/lua/luci/controller/speedtest.lua
 
 # Restart uhttpd to apply changes
 /etc/init.d/uhttpd restart
