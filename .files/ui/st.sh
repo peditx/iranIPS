@@ -15,7 +15,7 @@ mkdir -p /usr/lib/lua/luci/view/nettools
 
 # Create Lua controller file for Nettools
 cat << 'EOF' > /usr/lib/lua/luci/controller/nettools/nettools.lua
-module("luci.controller.nettools", package.seeall)
+module("luci.controller.nettools.nettools", package.seeall)
 
 function index()
     -- Add Net tools section to main menu
