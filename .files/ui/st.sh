@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # Update packages and install prerequisites
-opkg update
-opkg install python3-pip
-pip3 install speedtest-cli
+#opkg update
+#opkg install python3-pip
+#pip3 install speedtest-cli
 
 # Download Net tools icon
 mkdir -p /www/nettools-icon
@@ -15,6 +15,10 @@ chmod -R 755 /www/nettools-icon
 # Create necessary directories for Lua controller files
 mkdir -p /usr/lib/lua/luci/controller
 chmod -R 755 /usr/lib/lua/luci/controller
+
+# Create the view directory
+mkdir -p /usr/lib/lua/luci/view/nettools
+chmod -R 755 /usr/lib/lua/luci/view/nettools
 
 # Create Lua controller file for Nettools
 cat << 'EOF' > /usr/lib/lua/luci/controller/nettools.lua
