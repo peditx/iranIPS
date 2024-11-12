@@ -39,7 +39,9 @@ sudo apt-get install wget curl
 clear
 
 echo " First run is ok! lets go next steps ... "
+sleep2
 
+clear
 # Display the banner in magenta
 printf "${MAGENTA}
  _______           _______  __   __     __    __            __          
