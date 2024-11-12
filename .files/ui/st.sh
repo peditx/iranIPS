@@ -6,11 +6,41 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
-# Install required packages
+# Install curl (needed for API calls)
 opkg update
-opkg install curl python3 python3-pip
+opkg install curl
 
-# Fetch Cloudflare Speed Test script
+# Create the speedtest.lua controller for Luci
+echo "Creating speedtest.lua controller..."
+cat <<EOF > /usr/lib/lua/luci/controller/nettools/speedtest.lua
+module("luci.controller.nettools.speedtest", package.seeall)
+
+function index()
+    -- Create a menu entry for Speedtest under the 'NetTools' menu
+    entry({"admin", "nettools", "speedtest"}, cbi("nettools/speedtest"), _("Speedtest"), 60).dependent = false
+
+    -- Check if the user clicked the Start button
+    if luci.http.formvalue("start_speedtest") then
+        -- Fetch the Cloudflare Speedtest results
+        local result = luci.sys.exec("/usr/lib/lua/luci/controller/speedtest-cloudflare.sh")
+
+        -- Parse the result
+        local data = {}
+        data.download = string.match(result, '"download":%s*(%d+%.?%d*)')
+        data.upload = string.match(result, '"upload":%s*(%d+%.?%d*)')
+        data.ping = string.match(result, '"latency":%s*(%d+%.?%d*)')
+
+        -- Output the results as JSON
+        luci.http.prepare_content("application/json")
+        luci.http.write_json(data)
+    else
+        -- Show the HTML page with the Start button
+        luci.template.render("nettools/speedtest")
+    end
+end
+EOF
+
+# Create the speedtest-cloudflare.sh script
 echo "Creating speedtest-cloudflare.sh script..."
 cat <<EOF > /usr/lib/lua/luci/controller/speedtest-cloudflare.sh
 #!/bin/sh
@@ -29,36 +59,6 @@ EOF
 
 # Set executable permissions for the script
 chmod +x /usr/lib/lua/luci/controller/speedtest-cloudflare.sh
-
-# Create the speedtest.lua controller for Luci
-echo "Creating speedtest.lua controller..."
-cat <<EOF > /usr/lib/lua/luci/controller/nettools/speedtest.lua
-module("luci.controller.nettools.speedtest", package.seeall)
-
-function index()
-    entry({"admin", "nettools", "speedtest"}, cbi("nettools/speedtest"), _("Speedtest"), 60).dependent = false
-
-    if luci.http.formvalue("start_speedtest") then
-        -- Run the Cloudflare Speed Test script
-        local result = luci.sys.exec("/usr/lib/lua/luci/controller/speedtest-cloudflare.sh")
-
-        -- Parse the JSON result
-        local json = require("luci.jsonc")
-        local data = json.parse(result)
-
-        -- Display the results as JSON
-        luci.http.prepare_content("application/json")
-        luci.http.write_json({
-            download = data.download,
-            upload = data.upload,
-            ping = data.ping
-        })
-    else
-        -- Show the HTML page with the Start button
-        luci.template.render("nettools/speedtest")
-    end
-end
-EOF
 
 # Create the speedtest.htm view for Luci
 echo "Creating speedtest.htm view..."
