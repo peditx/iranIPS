@@ -10,11 +10,10 @@ mkdir -p /www/nettools-icon
 wget -O /www/nettools-icon/nettools.png "https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/ui/button/vecteezy_network-sharing-circle-logo-icon_12986609.png"
 
 # Create necessary directories for Lua controller files
-mkdir -p /usr/lib/lua/luci/controller/nettools
-mkdir -p /www/nettools
+mkdir -p /usr/lib/lua/luci/view/nettools
 
 # Create Lua controller file for Nettools
-cat << 'EOF' > /usr/lib/lua/luci/controller/nettools/nettools.lua
+cat << 'EOF' > /usr/lib/lua/luci/controller/nettools.lua
 module("luci.controller.nettools", package.seeall)
 
 function index()
@@ -30,7 +29,7 @@ end
 EOF
 
 # Create Speedtest HTML template
-cat << 'EOF' > /www/nettools/speedtest.htm
+cat << 'EOF' > /usr/lib/lua/luci/view/nettools/speedtest.htm
 <%+header%>
     <h2>Speedtest</h2>
     <form action="/cgi-bin/luci/admin/nettools/speedtest" method="POST">
@@ -90,7 +89,7 @@ cat << 'EOF' > /www/nettools/speedtest.htm
 EOF
 
 # Create script to run speedtest-cli and calculate jitter
-cat << 'EOF' > /usr/lib/lua/luci/controller/nettools/speedtest.lua
+cat << 'EOF' > /usr/lib/lua/luci/controller/speedtest.lua
 module("luci.controller.nettools.speedtest", package.seeall)
 
 function index()
@@ -137,6 +136,10 @@ function index()
     end
 end
 EOF
+
+# Set permissions for the created directories and files
+chmod -R 755 /usr/lib/lua/luci/controller/
+chmod -R 755 /www/nettools-icon
 
 # Restart uhttpd to apply changes
 /etc/init.d/uhttpd restart
