@@ -11,11 +11,11 @@ wget -O /www/nettools-icon/nettools.png "https://raw.githubusercontent.com/pedit
 
 # Create necessary directories for Lua controller files
 mkdir -p /usr/lib/lua/luci/controller/nettools
-mkdir -p /usr/lib/lua/luci/view/nettools
+mkdir -p /www/nettools
 
 # Create Lua controller file for Nettools
 cat << 'EOF' > /usr/lib/lua/luci/controller/nettools/nettools.lua
-module("luci.controller.nettools.nettools", package.seeall)
+module("luci.controller.nettools", package.seeall)
 
 function index()
     -- Add Net tools section to main menu
@@ -30,7 +30,7 @@ end
 EOF
 
 # Create Speedtest HTML template
-cat << 'EOF' > /usr/lib/lua/luci/view/nettools/speedtest.htm
+cat << 'EOF' > /www/nettools/speedtest.htm
 <%+header%>
     <h2>Speedtest</h2>
     <form action="/cgi-bin/luci/admin/nettools/speedtest" method="POST">
