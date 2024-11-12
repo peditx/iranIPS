@@ -6,33 +6,42 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
-# Install curl (needed for API calls)
+# Install python3 and pip if not installed
 opkg update
-opkg install curl
+opkg install python3 python3-pip
 
-# Create the speedtest.lua controller for Luci
-echo "Creating speedtest.lua controller..."
+# Install speedtest-cli using pip
+pip3 install speedtest-cli
+
+# Create necessary directories and files
+echo "Creating necessary directories and files..."
+
+# Create controller directories (if not exists)
+mkdir -p /usr/lib/lua/luci/controller/nettools
+mkdir -p /usr/lib/lua/luci/view/nettools
+
+# Create speedtest.lua file for the controller
+echo "Creating speedtest.lua..."
 cat <<EOF > /usr/lib/lua/luci/controller/nettools/speedtest.lua
 module("luci.controller.nettools.speedtest", package.seeall)
 
 function index()
-    -- Create a menu entry for Speedtest under the 'NetTools' menu
-    entry({"admin", "nettools", "speedtest"}, cbi("nettools/speedtest"), _("Speedtest"), 60).dependent = false
-
-    -- Check if the user clicked the Start button
     if luci.http.formvalue("start_speedtest") then
-        -- Fetch the Cloudflare Speedtest results
-        local result = luci.sys.exec("/usr/lib/lua/luci/controller/speedtest-cloudflare.sh")
+        -- Run the speedtest only after pressing the Start button
+        local speedtest = luci.sys.exec("python3 -m speedtest")
 
-        -- Parse the result
-        local data = {}
-        data.download = string.match(result, '"download":%s*(%d+%.?%d*)')
-        data.upload = string.match(result, '"upload":%s*(%d+%.?%d*)')
-        data.ping = string.match(result, '"latency":%s*(%d+%.?%d*)')
-
-        -- Output the results as JSON
+        -- Extract download, upload, and ping information
+        local download = string.match(speedtest, "Download: (.+) Mbit/s")
+        local upload = string.match(speedtest, "Upload: (.+) Mbit/s")
+        local ping = string.match(speedtest, "Ping: (.+) ms")
+        
+        -- Display the results as JSON
         luci.http.prepare_content("application/json")
-        luci.http.write_json(data)
+        luci.http.write_json({
+            download = download,
+            upload = upload,
+            ping = ping
+        })
     else
         -- Show the HTML page with the Start button
         luci.template.render("nettools/speedtest")
@@ -40,28 +49,8 @@ function index()
 end
 EOF
 
-# Create the speedtest-cloudflare.sh script
-echo "Creating speedtest-cloudflare.sh script..."
-cat <<EOF > /usr/lib/lua/luci/controller/speedtest-cloudflare.sh
-#!/bin/sh
-
-# Fetch the Cloudflare Speedtest results
-result=\$(curl -s https://www.cloudflare.com/rate-limit)
-
-# Extract the download, upload, and ping values
-download=\$(echo "\$result" | grep -oP '"download":\s*\K[0-9.]+')
-upload=\$(echo "\$result" | grep -oP '"upload":\s*\K[0-9.]+')
-ping=\$(echo "\$result" | grep -oP '"latency":\s*\K[0-9.]+')
-
-# Output the results in JSON format for the Luci page
-echo '{"download": "'"$download"'", "upload": "'"$upload"'", "ping": "'"$ping"'"}'
-EOF
-
-# Set executable permissions for the script
-chmod +x /usr/lib/lua/luci/controller/speedtest-cloudflare.sh
-
-# Create the speedtest.htm view for Luci
-echo "Creating speedtest.htm view..."
+# Create speedtest.htm file for the view
+echo "Creating speedtest.htm..."
 cat <<EOF > /usr/lib/lua/luci/view/nettools/speedtest.htm
 <%+header%>
 <%+menu%>
@@ -90,12 +79,6 @@ cat <<EOF > /usr/lib/lua/luci/view/nettools/speedtest.htm
     .start-button:hover {
         background-color: #45a049;
     }
-    .footer {
-        font-size: 14px;
-        text-align: center;
-        margin-top: 20px;
-        font-weight: bold;
-    }
 </style>
 
 <div class="isp-info">
@@ -109,10 +92,6 @@ cat <<EOF > /usr/lib/lua/luci/view/nettools/speedtest.htm
     <p id="download-speed">Download: N/A</p>
     <p id="upload-speed">Upload: N/A</p>
     <p id="ping-speed">Ping: N/A</p>
-</div>
-
-<div class="footer">
-    Made by PeDitX
 </div>
 
 <script>
