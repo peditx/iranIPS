@@ -21,7 +21,7 @@ fi
 
 # Download the OpenWrt image
 echo "Downloading OpenWrt image..."
-curl -L -o peditx.img.gz "$DOWNLOAD_URL"
+wget -O peditx.img.gz "$DOWNLOAD_URL"
 if [[ $? -ne 0 ]]; then
     echo "Error downloading the OpenWrt image. Exiting."
     exit 1
@@ -29,15 +29,10 @@ fi
 
 # Extract the image file
 echo "Extracting OpenWrt image..."
-gzip -dk peditx.img.gz  # Keeps the original file as well
+gunzip peditx.img.gz
 if [[ $? -ne 0 ]]; then
     echo "Error extracting the OpenWrt image. Exiting."
     exit 1
-fi
-
-# Rename extracted file if needed
-if [[ ! -f "peditx.img" ]]; then
-    mv "$(basename "$DOWNLOAD_URL" .gz)" peditx.img
 fi
 
 # Write the image to the disk
