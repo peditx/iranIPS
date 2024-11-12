@@ -9,6 +9,10 @@ pip3 install speedtest-cli
 mkdir -p /www/nettools-icon
 wget -O /www/nettools-icon/nettools.png "https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/ui/button/vecteezy_network-sharing-circle-logo-icon_12986609.png"
 
+# Create necessary directories for Lua controller files
+mkdir -p /usr/lib/lua/luci/controller/nettools
+mkdir -p /usr/lib/lua/luci/view/nettools
+
 # Create Lua controller file for Nettools and Speedtest
 cat << 'EOF' > /usr/lib/lua/luci/controller/nettools.lua
 module("luci.controller.nettools", package.seeall)
@@ -26,7 +30,6 @@ end
 EOF
 
 # Create Speedtest HTML template
-mkdir -p /usr/lib/lua/luci/view/nettools
 cat << 'EOF' > /usr/lib/lua/luci/view/nettools/speedtest.htm
 <%+header%>
     <h2>Speedtest</h2>
