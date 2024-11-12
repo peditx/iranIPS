@@ -34,6 +34,12 @@ wget https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/resize.
 # Clear the terminal
 clear
 
+sudo apt-get update
+sudo apt-get install wget curl
+clear
+
+echo " First run is ok! lets go next steps ... "
+
 # Display the banner in magenta
 printf "${MAGENTA}
  _______           _______  __   __     __    __            __          
