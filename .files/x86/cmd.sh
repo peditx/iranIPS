@@ -94,7 +94,7 @@ while true; do
             case "$choice" in
                 1) script_info="PeDitXrt.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/PeDitXrt.sh" ;;
                 2) script_info="Mikrotik.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/Mikrotik.sh" ;;
-                3) script_info="Openwrt.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/Openwrt.sh" ;;
+                3) script_info="Openwrt.sh https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/x86/Openwrt.sh" ;;
                 4) script_info="Immortalwrt.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/Immortalwrt.sh" ;;
                 5) script_info="Custom.sh https://raw.githubusercontent.com/peditx/easywrt/refs/heads/main/op/Custom.sh" ;;
             esac
