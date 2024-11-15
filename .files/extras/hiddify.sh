@@ -22,19 +22,8 @@ echo -e "${MAGENTA}
  \▓▓       \▓▓▓▓▓▓▓\▓▓▓▓▓▓▓ \▓▓   \▓▓▓▓ \▓▓   \▓▓\▓▓         \▓▓▓▓      
                                                  
 
-                            H  I  D  D  I  F  Y - Client on Passwall    
+                       H  I  D  D  I  F  Y - Client on Passwall    
 ${NC}"
-
-# Check for root permissions
-if [ "$(id -u)" -ne 0 ]; then
-    echo -e "${RED}This script must be run as root.${NC}"
-    exit 1
-fi
-
-# Define variables
-HIDDIFY_BASE_URL="https://github.com/hiddify/hiddify-core/releases/download/latest"
-INSTALL_DIR="/usr/bin"
-INIT_FILE="/etc/init.d/HiddifyCli"
 
 # Determine architecture
 arch=$(uname -m)
@@ -43,58 +32,65 @@ case $arch in
     i386 | i686) ARCHIVE="hiddify-cli-linux-386.tar.gz" ;;
     armv5*) ARCHIVE="hiddify-cli-linux-armv5.tar.gz" ;;
     armv6*) ARCHIVE="hiddify-cli-linux-armv6.tar.gz" ;;
-    armv7*) ARCHIVE="hiddify-cli-linux-armv7.tar.gz" ;;
+    armv7* | armv7l) ARCHIVE="hiddify-cli-linux-armv7.tar.gz" ;;  # Handling armv7 and armv7l
     aarch64) ARCHIVE="hiddify-cli-linux-arm64.tar.gz" ;;
     mips) ARCHIVE="hiddify-cli-linux-mips-softfloat.tar.gz" ;;
     mipsel) ARCHIVE="hiddify-cli-linux-mipsel-softfloat.tar.gz" ;;
     mips64) ARCHIVE="hiddify-cli-linux-mips64.tar.gz" ;;
-    mips64el) ARCHIVE="hiddify-cli-linux-mips64el.tar.gz" ;;
-    s390x) ARCHIVE="hiddify-cli-linux-s390x.tar.gz" ;;
     *) echo -e "${RED}Unsupported architecture: $arch${NC}"; exit 1 ;;
 esac
 
-# Download and extract HiddifyCli
-echo -e "${YELLOW}Downloading HiddifyCli for architecture $arch...${NC}"
-wget -q "$HIDDIFY_BASE_URL/$ARCHIVE" -O /tmp/HiddifyCli.tar.gz
+# Define the URL for downloading
+URL="https://github.com/hiddify/hiddify-core/releases/download/latest/$ARCHIVE"
+
+echo -e "${YELLOW}Downloading $ARCHIVE for architecture $arch...${NC}"
+wget -q --show-progress $URL -O /tmp/$ARCHIVE
+
+# Check if download was successful
 if [ $? -ne 0 ]; then
     echo -e "${RED}Failed to download HiddifyCli.${NC}"
     exit 1
 fi
 
-echo -e "${YELLOW}Extracting HiddifyCli...${NC}"
-tar -xzf /tmp/HiddifyCli.tar.gz -C /tmp
-mv /tmp/HiddifyCli "$INSTALL_DIR"
-chmod +x "$INSTALL_DIR/HiddifyCli"
+# Extract the downloaded archive
+echo -e "${YELLOW}Extracting $ARCHIVE...${NC}"
+tar -xzf /tmp/$ARCHIVE -C /tmp
 
-# Create init script
+# Move the extracted file to the appropriate location
+echo -e "${YELLOW}Installing HiddifyCli...${NC}"
+mv /tmp/hiddify-cli-linux-* /usr/bin/HiddifyCli
+
+# Make it executable
+chmod +x /usr/bin/HiddifyCli
+
+# Create init script for HiddifyCli
 echo -e "${YELLOW}Creating init script...${NC}"
-cat <<EOF > "$INIT_FILE"
+cat > /etc/init.d/HiddifyCli <<EOL
 #!/bin/sh /etc/rc.common
 START=91
 USE_PROCD=1
 
 start_service() {
     procd_open_instance
-    procd_set_param command /usr/bin/HiddifyCli run -c /www/hdconf/wg.conf
+    procd_set_param command /usr/bin/HiddifyCli run -c /root/wg.conf
     procd_set_param stdout 1
     procd_set_param stderr 1
     procd_set_param respawn
     procd_close_instance
 }
-EOF
+EOL
 
-chmod 755 "$INIT_FILE"
+# Set the appropriate permissions
+chmod 755 /etc/init.d/HiddifyCli
 
 # Enable and start the service
-echo -e "${YELLOW}Enabling and starting HiddifyCli service...${NC}"
+echo -e "${GREEN}Enabling and starting HiddifyCli service...${NC}"
 service HiddifyCli enable
 service HiddifyCli start
 
-echo -e "${GREEN}HiddifyCli installation completed successfully.${NC}"
-
-# Check if Passwall or Passwall2 is installed
-echo -e "${YELLOW}Configuring Passwall or Passwall2...${NC}"
+# Configure Passwall or Passwall2 if installed
 if service passwall2 status > /dev/null 2>&1; then
+    # Passwall2 is installed
     uci set passwall2.WarpPlus=nodes
     uci set passwall2.WarpPlus.remarks='Hiddify-Client'
     uci set passwall2.WarpPlus.type='Xray'
@@ -111,6 +107,7 @@ if service passwall2 status > /dev/null 2>&1; then
     uci commit passwall2
     echo -e "${GREEN}Passwall2 configuration updated successfully.${NC}"
 elif service passwall status > /dev/null 2>&1; then
+    # Passwall is installed
     uci set passwall.WarpPlus=nodes
     uci set passwall.WarpPlus.remarks='Hiddify-Client'
     uci set passwall.WarpPlus.type='Xray'
@@ -129,9 +126,3 @@ elif service passwall status > /dev/null 2>&1; then
 else
     echo -e "${RED}Neither Passwall nor Passwall2 is installed. Skipping configuration.${NC}"
 fi
-
-echo "Installation completed."
-
-echo -e "${YELLOW}** Installation Completed ** ${NC}"
-echo -e "${MAGENTA} Made By : PeDitX ${NC}"
-sleep 5
