@@ -129,3 +129,9 @@ elif service passwall status > /dev/null 2>&1; then
 else
     echo -e "${RED}Neither Passwall nor Passwall2 is installed. Skipping configuration.${NC}"
 fi
+
+echo "Installation completed."
+
+echo -e "${YELLOW}** Installation Completed ** ${NC}"
+echo -e "${MAGENTA} Made By : PeDitX ${NC}"
+sleep 5
