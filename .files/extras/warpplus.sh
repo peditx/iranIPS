@@ -1,4 +1,5 @@
 #!/bin/bash
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -20,87 +21,56 @@ echo -e "${MAGENTA}
 | ▓▓     | ▓▓▓▓▓▓▓▓ ▓▓__/ ▓▓ ▓▓ | ▓▓|  \  ▓▓ \▓▓\ ▓▓       | ▓▓|  \     
 | ▓▓      \▓▓     \ ▓▓    ▓▓ ▓▓  \▓▓  ▓▓ ▓▓  | ▓▓ ▓▓        \▓▓  ▓▓     
  \▓▓       \▓▓▓▓▓▓▓\▓▓▓▓▓▓▓ \▓▓   \▓▓▓▓ \▓▓   \▓▓\▓▓         \▓▓▓▓      
-                                                 
+                                                
 
-                       W  A  R  P  P  L  U  S  on Passwall   
+                       H  I  D  D  I  F  Y - Client on Passwall    
 ${NC}"
 
-# Determine system architecture
+# Set architecture
+ARCHITECTURES=("386" "amd64" "arm64" "armv5" "armv6" "armv7" "mips-hardfloat" "mips-softfloat" "mips64" "mips64el" "mipsel-hardfloat" "mipsel-softfloat" "s390x")
+
+# Define the base URL for the downloads
+BASE_URL="https://github.com/hiddify/hiddify-core/releases/download/v3.1.8/"
+
+# Check the system architecture
 ARCH=$(uname -m)
-case $ARCH in
-    x86_64)
-        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-amd64.zip"
-        ;;
-    aarch64)
-        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-arm64.zip"
-        ;;
-    armv7l)
-        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-arm7.zip"
-        ;;
-    mips)
-        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-mips.zip"
-        ;;
-    mips64)
-        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-mips64.zip"
-        ;;
-    mips64le)
-        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-mips64le.zip"
-        ;;
-    riscv64)
-        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-riscv64.zip"
-        ;;
-    *)
-        echo -e "${RED}System architecture not supported.${NC}"
-        exit 1
-        ;;
-esac
 
-# Download and extract warp file
-cd /tmp || exit
-wget -O warp.zip "$WARP_URL"
-unzip -o warp.zip
+# Check if the architecture is in the list of supported architectures
+if [[ " ${ARCHITECTURES[@]} " =~ " ${ARCH} " ]]; then
+    echo -e "${YELLOW}Downloading HiddifyCli for architecture ${ARCH}...${NC}"
+    DOWNLOAD_URL="${BASE_URL}hiddify-cli-linux-${ARCH}.tar.gz"
+    
+    # Download the appropriate file
+    curl -L $DOWNLOAD_URL -o /tmp/hiddify-cli.tar.gz
 
-# Rename and copy the warp executable to /usr/bin
-mv -f warp-plus warp
-cp -f warp /usr/bin/
-chmod +x /usr/bin/warp
+    # Check if the download was successful
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}Download successful.${NC}"
+        
+        # Extract the downloaded file
+        tar -xvzf /tmp/hiddify-cli.tar.gz -C /tmp
 
-# Create the init script for warp in /etc/init.d
-cat << 'EOF' > /etc/init.d/warp
-#!/bin/sh /etc/rc.common
- 
-START=91
-USE_PROCD=1
-PROG=/usr/bin/warp
- 
-start_service() {
-  args=""
-  args="$args -b 127.0.0.1:8086 --scan"
-  procd_open_instance
-  procd_set_param command $PROG $args
-  procd_set_param stdout 1
-  procd_set_param stderr 1
-  procd_set_param respawn
-  procd_close_instance
-}
-EOF
+        # Move the extracted file to /usr/bin
+        mv /tmp/hiddify-cli-linux-* /usr/bin/HiddifyCli
+        chmod +x /usr/bin/HiddifyCli
 
-# Set permissions for the init.d script
-chmod 755 /etc/init.d/warp
+        echo -e "${GREEN}HiddifyCli installed successfully.${NC}"
+    else
+        echo -e "${RED}Failed to download HiddifyCli.${NC}"
+    fi
+else
+    echo -e "${RED}Architecture ${ARCH} is not supported. Please check the available architectures.${NC}"
+fi
 
-# Enable and start the warp service
-service warp enable
-service warp start
-
-# Check if Passwall or Passwall2 is installed
+# Configure Passwall or Passwall2 if installed
 if service passwall2 status > /dev/null 2>&1; then
     # Passwall2 is installed
     uci set passwall2.WarpPlus=nodes
-    uci set passwall2.WarpPlus.remarks='Warp-Plus'
+    uci set passwall2.WarpPlus.remarks='Hiddify-Client'
     uci set passwall2.WarpPlus.type='Xray'
     uci set passwall2.WarpPlus.protocol='socks'
     uci set passwall2.WarpPlus.server='127.0.0.1'
-    uci set passwall2.WarpPlus.port='8086'
+    uci set passwall2.WarpPlus.port='2334'
     uci set passwall2.WarpPlus.address='127.0.0.1'
     uci set passwall2.WarpPlus.tls='0'
     uci set passwall2.WarpPlus.transport='tcp'
@@ -113,11 +83,11 @@ if service passwall2 status > /dev/null 2>&1; then
 elif service passwall status > /dev/null 2>&1; then
     # Passwall is installed
     uci set passwall.WarpPlus=nodes
-    uci set passwall.WarpPlus.remarks='Warp-Plus'
+    uci set passwall.WarpPlus.remarks='Hiddify-Client'
     uci set passwall.WarpPlus.type='Xray'
     uci set passwall.WarpPlus.protocol='socks'
     uci set passwall.WarpPlus.server='127.0.0.1'
-    uci set passwall.WarpPlus.port='8086'
+    uci set passwall.WarpPlus.port='2334'
     uci set passwall.WarpPlus.address='127.0.0.1'
     uci set passwall.WarpPlus.tls='0'
     uci set passwall.WarpPlus.transport='tcp'
@@ -130,27 +100,3 @@ elif service passwall status > /dev/null 2>&1; then
 else
     echo -e "${RED}Neither Passwall nor Passwall2 is installed. Skipping configuration.${NC}"
 fi
-
-# Install watchcat
-echo "Installing watchcat..."
-if opkg install watchcat; then
-  echo "watchcat has been installed successfully."
-else
-  echo "Failed to install watchcat."
-  exit 1
-fi
-
-# Install luci-app-watchcat
-echo "Installing luci-app-watchcat..."
-if opkg install luci-app-watchcat; then
-  echo "luci-app-watchcat has been installed successfully."
-else
-  echo "Failed to install luci-app-watchcat."
-  exit 1
-fi
-
-echo "Installation completed."
-
-echo -e "${YELLOW}** Installation Completed ** ${NC}"
-echo -e "${MAGENTA} Made By : PeDitX ${NC}"
-sleep 5
