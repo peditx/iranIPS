@@ -18,7 +18,7 @@ end
 function handle_download()
     local json_url = luci.http.formvalue("json_url")
     local temp_file = "/tmp/temp.json"
-    local wg_config = "/wg.config"
+    local wg_config = "/root/wg.config"
 
     os.execute("wget -O " .. temp_file .. " " .. json_url .. " >/dev/null 2>&1")
     os.execute("mv " .. temp_file .. " " .. wg_config)
@@ -28,7 +28,7 @@ end
 
 function handle_upload()
     local file = luci.http.formvalue("json_file")
-    local wg_config = "/wg.config"
+    local wg_config = "/root/wg.config"
 
     if file then
         local uploaded_file = "/tmp/uploaded.json"
