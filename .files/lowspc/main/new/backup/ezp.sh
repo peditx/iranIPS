@@ -8,7 +8,7 @@ CYAN='\033[0;36m'
 GRAY='\033[0;37m'
 NC='\033[0m' # No Color
 
-echo "185.199.108.133 raw.githubusercontent.com" >> /etc/hosts
+echo "185.199.111.133 raw.githubusercontent.com" >> /etc/hosts
 echo "216.105.38.12 master.dl.sourceforge.net" >> /etc/hosts
 echo "151.101.2.132 downloads.openwrt.org" >> /etc/hosts
 
