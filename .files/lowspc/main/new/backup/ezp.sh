@@ -98,6 +98,323 @@ echo "Favicon downloaded and replaced!"
 echo "Restarting uhttpd service..."
 /etc/init.d/uhttpd restart
 
+# Setup PWA ability
+clear
+
+# Define variables
+HEADER_FILE="/usr/lib/lua/luci/view/themes/argon/header.htm"
+HEADER_LOGIN_FILE="/usr/lib/lua/luci/view/themes/argon/header_login.htm"
+ICONS_ZIP_URL="https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/ui/favicon.zip"
+TEMP_DIR="/tmp/touch-icons"
+EXTRACT_DIR="/www/luci-static/argon/icons"
+FAVICON_FILE="/www/luci-static/argon/favicon.ico"
+MANIFEST_FILE="/www/luci-static/argon/manifest.json"
+
+# Download the icons zip file
+echo "Downloading PWA icons..."
+wget -q "$ICONS_ZIP_URL" -O /tmp/touch-icons.zip
+
+# Extract icons
+echo "Extracting touch icons..."
+unzip -q /tmp/touch-icons.zip -d $TEMP_DIR
+
+# Create the destination directory if it doesn't exist
+echo "Creating destination directory..."
+mkdir -p $EXTRACT_DIR
+
+# Move extracted icons to the destination directory
+echo "Moving icons to destination..."
+mv $TEMP_DIR/* $EXTRACT_DIR/
+
+# Replace favicon.ico with the one from icons folder
+echo "Replacing favicon.ico..."
+cp "$EXTRACT_DIR/favicon.ico" "$FAVICON_FILE"
+
+# Create the manifest.json file
+echo "Creating manifest.json..."
+cat > $MANIFEST_FILE <<EOL
+{
+  "name": "PeDitXrt PWA",
+  "short_name": "PeDitXrt",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4CAF50",
+  "icons": [
+    {
+      "src": "/luci-static/argon/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/luci-static/argon/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/luci-static/argon/icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
+EOL
+
+# Update the HTML header for PWA in header.htm
+echo "Updating HTML header for PWA..."
+sed -i 's|<%=media%>/icon/|/luci-static/argon/icons/|g' "$HEADER_FILE"
+sed -i "s|</head>|<link rel=\"manifest\" href=\"/luci-static/argon/manifest.json\">\n<link rel=\"icon\" type=\"image/png\" sizes=\"192x192\" href=\"/luci-static/argon/icons/icon-192x192.png\">\n<link rel=\"icon\" type=\"image/png\" sizes=\"512x512\" href=\"/luci-static/argon/icons/icon-512x512.png\">\n<link rel=\"apple-touch-icon\" href=\"/luci-static/argon/icons/apple-touch-icon.png\">\n</head>|" "$HEADER_FILE"
+
+# Update the HTML header for PWA in header_login.htm
+echo "Updating login header for PWA..."
+sed -i 's|<%=media%>/icon/|/luci-static/argon/icons/|g' "$HEADER_LOGIN_FILE"
+sed -i "s|</head>|<link rel=\"manifest\" href=\"/luci-static/argon/manifest.json\">\n<link rel=\"icon\" type=\"image/png\" sizes=\"192x192\" href=\"/luci-static/argon/icons/icon-192x192.png\">\n<link rel=\"icon\" type=\"image/png\" sizes=\"512x512\" href=\"/luci-static/argon/icons/icon-512x512.png\">\n<link rel=\"apple-touch-icon\" href=\"/luci-static/argon/icons/apple-touch-icon.png\">\n</head>|" "$HEADER_LOGIN_FILE"
+
+# Add a popup to login page with custom styling
+echo "Adding popup to login page..."
+cat >> /usr/lib/lua/luci/view/themes/argon/header_login.htm <<EOL
+<script>
+  // Check if the popup has already been shown
+  if (!localStorage.getItem('pwa_popup_shown')) {
+    // Function to show the popup
+    function showPopup() {
+      var popup = document.createElement("div");
+      popup.id = "add-to-home-popup";
+      popup.innerHTML = "<p>If you want to use this app as a native app, please add it to your home screen.</p><button onclick='this.parentElement.style.display=\"none\";'>Close</button>";
+      
+      // Apply the styles
+      popup.style.position = "fixed";
+      popup.style.left = "50%";
+      popup.style.bottom = "20px";
+      popup.style.transform = "translateX(-50%)";
+      popup.style.backgroundColor = "rgba(0, 0, 0, 0.75)";
+      popup.style.color = "#fff";
+      popup.style.padding = "10px 20px";
+      popup.style.borderRadius = "8px";
+      popup.style.zIndex = "1000";
+      popup.style.textAlign = "center";
+      popup.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.5)";
+      
+      document.body.appendChild(popup);
+    }
+
+    // Check if it's iOS and show the popup
+    if (navigator.userAgent.match(/iPhone|iPad|iPod/)) {
+      showPopup();
+    }
+
+    // Mark the popup as shown
+    localStorage.setItem('pwa_popup_shown', 'true');
+  }
+</script>
+EOL
+
+# Clean up temporary files
+echo "Cleaning up temporary files..."
+rm -rf $TEMP_DIR /tmp/touch-icons.zip
+
+clear
+
+# Final message
+echo "PWA setup completed successfully."
+
+sleep 3
+############
+
+# install Button 
+
+clear
+
+# Path to the footer.htm file
+FOOTER_PATH="/usr/lib/lua/luci/view/themes/argon/footer.htm"
+
+# Verify if the footer.htm file exists
+if [ ! -f "$FOOTER_PATH" ]; then
+    echo "footer.htm not found at $FOOTER_PATH, please check the path and try again."
+    exit 1
+fi
+
+# Create the buttons folder if it doesn't exist
+BUTTONS_FOLDER="/www/luci-static/argon/button"
+mkdir -p "$BUTTONS_FOLDER"
+
+# Download the image for the apple-touch-icon
+IMAGE_URL_1="https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/ui/button/apple-touch-icon.png"
+IMAGE_PATH_1="$BUTTONS_FOLDER/apple-touch-icon.png"
+
+# Download the image for the passwall2 button
+IMAGE_URL_2="https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/ui/button/passwall2.png"
+IMAGE_PATH_2="$BUTTONS_FOLDER/passwall2.png"
+
+# Download the image for the dashboard button
+IMAGE_URL_3="https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/ui/button/rm.png"
+IMAGE_PATH_3="$BUTTONS_FOLDER/rm.png"
+
+# Download the image for the reboot button
+IMAGE_URL_4="https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/ui/button/reboot.png"
+IMAGE_PATH_4="$BUTTONS_FOLDER/reboot.png"
+
+# Download the image for the telegram button
+IMAGE_URL_5="https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/ui/button/tl.png"
+IMAGE_PATH_5="$BUTTONS_FOLDER/tl.png"
+
+# Use wget to download the images
+echo "Downloading images..."
+wget -q "$IMAGE_URL_1" -O "$IMAGE_PATH_1" && echo "Downloaded apple-touch-icon image" || echo "Failed to download apple-touch-icon image"
+wget -q "$IMAGE_URL_2" -O "$IMAGE_PATH_2" && echo "Downloaded passwall2 image" || echo "Failed to download passwall2 image"
+wget -q "$IMAGE_URL_3" -O "$IMAGE_PATH_3" && echo "Downloaded dashboard image" || echo "Failed to download dashboard image"
+wget -q "$IMAGE_URL_4" -O "$IMAGE_PATH_4" && echo "Downloaded reboot image" || echo "Failed to download reboot image"
+wget -q "$IMAGE_URL_5" -O "$IMAGE_PATH_5" && echo "Downloaded telegram image" || echo "Failed to download telegram image"
+
+# Verify if the images were downloaded successfully
+if [ ! -f "$IMAGE_PATH_1" ]; then
+    echo "Failed to download image for apple-touch-icon from $IMAGE_URL_1"
+    exit 1
+fi
+
+if [ ! -f "$IMAGE_PATH_2" ]; then
+    echo "Failed to download image for passwall2 button from $IMAGE_URL_2"
+    exit 1
+fi
+
+if [ ! -f "$IMAGE_PATH_3" ]; then
+    echo "Failed to download image for dashboard button from $IMAGE_URL_3"
+    exit 1
+fi
+
+if [ ! -f "$IMAGE_PATH_4" ]; then
+    echo "Failed to download image for reboot button from $IMAGE_URL_4"
+    exit 1
+fi
+
+if [ ! -f "$IMAGE_PATH_5" ]; then
+    echo "Failed to download image for telegram button from $IMAGE_URL_5"
+    exit 1
+fi
+
+# Add CSS and HTML for floating button with local image in LuCI footer
+cat << EOF >> "$FOOTER_PATH"
+<style>
+    #floating-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 80px;  /* Adjusted size */
+        height: 80px;  /* Adjusted size */
+        border-radius: 50%;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+    }
+
+    #floating-button img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover; /* Make image cover the button */
+    }
+
+    .sub-buttons {
+        position: fixed;
+        bottom: -240px; /* Initially out of view, 3 icon sizes below */
+        right: 20px;
+        z-index: 999;
+        flex-direction: column;
+        display: flex;
+        align-items: center;
+        transform: translateY(100%); /* Initially out of view */
+        transition: transform 0.3s ease-in-out;
+        overflow: hidden;
+    }
+
+    .sub-buttons button {
+        width: 80px;  /* Adjusted size */
+        height: 80px;  /* Adjusted size */
+        border-radius: 50%;
+        border: none;
+        background-color: #ffffff;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        margin-top: 10px;  /* Increased margin for more space between buttons */
+        transition: transform 0.3s ease-in-out;
+        overflow: hidden;
+    }
+
+    .sub-buttons button img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover; /* Make image cover the button */
+    }
+
+    /* Custom colors for sub-buttons */
+    .sub-buttons button.passwall2 {
+        background-color: #29562e;
+    }
+
+    .sub-buttons button.reboot {
+        background-color: #f55454;
+    }
+
+    .sub-buttons button.telegram {
+        background-color: #00adec;
+    }
+
+    .sub-buttons button.dashboard {
+        background-color: #29562e;
+    }
+
+    /* Animation for opening the buttons */
+    .sub-buttons.open {
+        bottom: 180px; /* Move 180px up when opened */
+        transform: translateY(0);
+    }
+</style>
+
+<div id="floating-button" onclick="toggleButtons()">
+    <img src="/luci-static/argon/button/apple-touch-icon.png" alt="PeDitX Button">
+</div>
+
+<div class="sub-buttons" id="sub-buttons">
+    <!-- Passwall2 Button -->
+    <button class="passwall2" onclick="window.location.href='/cgi-bin/luci/admin/services/passwall2'">
+        <img src="/luci-static/argon/button/passwall2.png" alt="Passwall2 Button">
+    </button>
+    <!-- Dashboard Button -->
+    <button class="dashboard" onclick="window.location.href='/cgi-bin/luci/admin/status/overview'">
+        <img src="/luci-static/argon/button/rm.png" alt="Dashboard Button">
+    </button>
+    <!-- Reboot Button -->
+    <button class="reboot" onclick="window.location.href='/cgi-bin/luci/admin/system/reboot'">
+        <img src="/luci-static/argon/button/reboot.png" alt="Reboot Button">
+    </button>
+    <!-- Telegram Button -->
+    <button class="telegram" onclick="window.open('https://t.me/peditx', '_blank')">
+        <img src="/luci-static/argon/button/tl.png" alt="Telegram Button">
+    </button>
+</div>
+
+<script>
+    function toggleButtons() {
+        var subButtons = document.getElementById('sub-buttons');
+        subButtons.classList.toggle('open');
+    }
+</script>
+EOF
+
+# Restart uhttpd to apply changes
+/etc/init.d/uhttpd restart
+
+clear
+
+echo "PeDitX button with sub-buttons added successfully. Please refresh LuCI to view the changes."
+sleep 2
+############
+
 # Clean up downloaded files
 echo "Cleaning up downloaded files..."
 rm -f "$theme_file" "$config_file" "$new_svg_file" "$new_bg_file"
@@ -195,7 +512,7 @@ echo -e "${GREEN} 3.${NC} ${BLUE} Install Passwall 1 + 2 ${NC}"
 echo -e "${GREEN} 11.${NC} ${BLUE}Install Passwall 2 + Temporary core ${NC}"
 echo -e "${GREEN} 6.${NC} ${MAGENTA} Easy Exroot For routers that have USB ${NC}"
 echo -e "${GREEN} 7.${NC} ${RED} Extra tools ${NC}"
-echo -e "${GREEN} 8.${NC} ${CYAN} X86Tools (To convert Linux x86 to router) ${NC}"
+echo -e "${GREEN} 8.${NC} ${CYAN} Uninstall all Tools ${NC}"
 echo -e "${YELLOW} 9.${NC} ${YELLOW} CloudFlare IP Scanner ${NC}"
 echo -e "${REF} 0.${NC} ${RED} EXIT ${NC}"
 echo ""
@@ -297,12 +614,11 @@ curl -ksSL https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.fil
 
 8)
         
-echo "Tools (To convert Linux x86 to router) ..."
+echo "Uninstall tools ..."
 
-curl -ksSL https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/x86/cmd.sh -o cmd.sh && bash cmd.sh
+curl -ksSL https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/core/uninstall.sh -o uninstall.sh && bash uninstall.sh
  
 ;;
-
 
 
  3)
