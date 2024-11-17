@@ -33,7 +33,7 @@ echo -e "${BLUE}Updating package lists...${NC}"
 opkg update
 
 # List of packages to install
-packages="sing-box haproxy v2ray-core luci-app-v2raya luci-app-openvpn softethervpn5-client fontconfig luci-app-wol hysteria"
+packages="sing-box haproxy v2ray-core luci-app-v2raya luci-app-openvpn softethervpn5-client fontconfig luci-app-wol luci-app-smartdns hysteria"
 
 # Initialize installation results variable
 install_results=""
