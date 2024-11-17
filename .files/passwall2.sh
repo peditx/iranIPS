@@ -379,7 +379,7 @@ if [ "$user_input" = "0" ]; then
     sleep 5  # Wait for 5 seconds before exiting
     exit 0
 else
-    sh ezp.sh
+    rm -f extra.sh && wget https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/extras/extra.sh && chmod 777 extra.sh && sh extra.sh
 fi
 
 echo -e "${MAGENTA}All installations and configurations completed.${NC}"
