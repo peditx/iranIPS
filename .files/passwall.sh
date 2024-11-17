@@ -275,3 +275,19 @@ echo -e "${MAGENTA} Made By : PeDitX ${ENDCOLOR}"
 rm passwallx.sh 2> /dev/null
 
 /sbin/reload_config
+
+# Prompt user for continuation with colored text
+echo -e "\033[0;36mPress Enter to continue or press 0 to exit: \033[0m"
+read user_input
+
+if [ "$user_input" = "0" ]; then
+    echo -e "${YELLOW}Exiting script...${NC}"
+    # Display the "Made by PeDitX" message
+    echo -e "${MAGENTA}Made by PeDitX${NC}"
+    sleep 5  # Wait for 5 seconds before exiting
+    exit 0
+else
+    rm -f extra.sh && wget https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/extras/extra.sh && chmod 777 extra.sh && sh extra.sh
+fi
+
+echo -e "${MAGENTA}All installations and configurations completed.${NC}"
