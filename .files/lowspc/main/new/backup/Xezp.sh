@@ -508,7 +508,8 @@ echo -e "${GREEN} 11.${NC} ${BLUE}Install Passwall 2 + Temporary core ${NC}"
 echo -e "${GREEN} 6.${NC} ${MAGENTA} Easy Exroot For routers that have USB ${NC}"
 echo -e "${GREEN} 7.${NC} ${RED} Extra tools ${NC}"
 echo -e "${GREEN} 8.${NC} ${CYAN} Uninstall all Tools ${NC}"
-echo -e "${YELLOW} 9.${NC} ${YELLOW} CloudFlare IP Scanner ${NC}"
+echo -e "${YELLOW} 9.${NC} ${MAGENTA} CloudFlare IP Scanner ${NC}"
+echo -e "${YELLOW} 10.${NC} ${YELLOW} Github/Sourceforge/OpenWrt Addresses Fixer ${NC}"
 echo -e "${REF} 0.${NC} ${RED} EXIT ${NC}"
 echo ""
 
@@ -612,6 +613,14 @@ curl -ksSL https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.fil
 echo "Uninstall tools ..."
 
 curl -ksSL https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/core/uninstall.sh -o uninstall.sh && bash uninstall.sh
+ 
+;;
+
+10)
+        
+echo "Github/Sourceforge/OpenWrt Addresses Fix ..."
+
+curl -ksSL https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/host.sh -o host.sh && bash host.sh
  
 ;;
 
