@@ -23,8 +23,15 @@ uci commit
 cp ezp.sh /sbin/passwall
 
 # First Reform
+opkg update
+opkg install curl luci-compat 
+opkg install luci-lib-ipkg
+sleep 2
+clear
 opkg install luci-app-ttyd
+sleep 2
 opkg remove uci-mod-dashboard
+sleep 2
 
 # GitHub repository URL and package name
 REPO_URL="https://github.com/peditx/luci-theme-peditx"
