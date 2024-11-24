@@ -52,8 +52,8 @@ while true; do
             ;;
         3)
             echo -e "${YELLOW}Cleaning up memory...${NC}"
-            rm -f /root/*.sh
-            echo -e "${GREEN}All .sh files have been deleted.${NC}"
+            rm -f /root/*.sh /root/*.pub /root/*.b64
+            echo -e "${GREEN}ِYour Memory is Clean...${NC}"
             ;;
         4)
             echo -e "${GREEN}Running WiFi settings...${NC}"
