@@ -135,7 +135,7 @@ echo -e "${GREEN} 6.${NC} ${MAGENTA} Easy Exroot For routers that have USB ${NC}
 echo -e "${GREEN} 7.${NC} ${RED} Extra tools ${NC}"
 echo -e "${GREEN} 8.${NC} ${CYAN} Uninstall all Tools ${NC}"
 echo -e "${YELLOW} 9.${NC} ${MAGENTA} CloudFlare IP Scanner ${NC}"
-echo -e "${YELLOW} 10.${NC} ${YELLOW} Github/Sourceforge/OpenWrt Addresses Fixer ${NC}"
+echo -e "${YELLOW} 10.${NC} ${YELLOW}Github/Sourceforge/OpenWrt Addresses Fixer ${NC}"
 echo -e "${REF} 0.${NC} ${RED} EXIT ${NC}"
 echo ""
 
@@ -189,6 +189,18 @@ echo "Updating Passwall v1"
 opkg update
 
 opkg install luci-app-passwall
+
+####improve
+
+cd /tmp
+
+wget -q https://github.com/peditx/iranIPS/raw/refs/heads/main/.files/hard.zip
+
+unzip -o hard.zip -d /
+
+cd
+
+########
  
 ;;
 
@@ -200,7 +212,19 @@ echo "Updating Passwall v2"
 opkg update
 
 opkg install luci-app-passwall2
- 
+
+####improve
+
+cd /tmp
+
+wget -q https://github.com/peditx/iranIPS/raw/refs/heads/main/.files/hard.zip
+
+unzip -o hard.zip -d /
+
+cd
+
+########
+
 ;;
 
 
