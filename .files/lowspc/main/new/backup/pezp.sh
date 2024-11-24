@@ -18,6 +18,10 @@ uci set system.@system[0].timezone='<+0330>-3:30'
 
 uci commit
 
+uci set system.@system[0].hostname='PeDitXrt'
+uci commit system
+/etc/init.d/system restart
+
 /sbin/reload_config
 
 cp ezp.sh /sbin/passwall
