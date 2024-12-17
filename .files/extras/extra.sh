@@ -18,8 +18,7 @@ while true; do
         "3" "Cleanup memory" \
         "4" "Install CloudFlare Warp plus" \
         "5" "Auto Router IP Changer" \
-        "6" "Changing Repository to PeDitX-Repository" \
-        "0" "Exit" 3>&1 1>&2 2>&3)
+        "6" "Changing Repository to PeDitX-Repository" 3>&1 1>&2 2>&3)
 
     # If CANCEL is pressed
     if [ $? -ne 0 ]; then
@@ -52,10 +51,6 @@ while true; do
         6)
             echo -e "${GREEN}Changing Repository to PeDitX-Repository...${NC}"
             rm -f repo.sh && wget https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/extras/repo.sh && chmod 777 repo.sh && sh repo.sh
-            ;;
-        0)
-            echo -e "${RED}Exiting the program...${NC}"
-            break
             ;;
         *)
             echo -e "${RED}Invalid option. Please try again.${NC}"
