@@ -50,6 +50,8 @@ opkg install luci-app-ttyd
 sleep 2
 opkg remove uci-mod-dashboard
 sleep 2
+opkg install whiptail
+sleep 2
 
 # GitHub repository URL and package name
 REPO_URL="https://github.com/peditx/luci-theme-peditx"
@@ -117,6 +119,6 @@ echo " - System Ver : $DISTRIB_RELEASE"
 echo " - System Arch : $DISTRIB_ARCH"
 
 # RESULT=`echo "$DISTRIB_RELEASE" | grep -o 23 | sed -n '1p'`
-
+sleep 5
 # if [ "$RESULT" == "23" ]; then
 sh setup.sh
