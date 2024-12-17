@@ -36,6 +36,7 @@ while true; do
     echo -e "${GREEN}3. Cleanup memory${NC}"
     echo -e "${YELLOW}4. Install CloudFlare Warp plus${NC}"
     echo -e "${CYAN}5. Auto Router IP Changer${NC}"
+    echo -e "${GREEN}6. Changing Repository to PeDitX-Repository${NC}"
     echo -e "${BLUE}0. Return to main menu${NC}"
     echo -e "${RED}11. Exit${NC}"
 
@@ -62,6 +63,10 @@ while true; do
         5)
             echo -e "${GREEN}Running WiFi settings...${NC}"
             rm -f ip.sh && wget https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/extras/ip.sh && chmod 777 ip.sh && sh ip.sh
+            ;;
+        6)
+            echo -e "${GREEN}Running WiFi settings...${NC}"
+            rm -f repo.sh && wget https://raw.githubusercontent.com/peditx/iranIPS/refs/heads/main/.files/extras/repo.sh && chmod 777 repo.sh && sh repo.sh
             ;;
         0)
             echo -e "${CYAN}Returning to the main menu...${NC}"
