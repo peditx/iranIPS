@@ -353,7 +353,7 @@ uci commit system
 
 uci commit wireless
 
-uci set system.@system[0].hostname=PeDitXrt
+uci set system.@system[0].hostname=PeDitXOS
 
 uci commit system
 
