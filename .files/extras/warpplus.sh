@@ -25,25 +25,25 @@ ${NC}"
 ARCH=$(uname -m)
 case $ARCH in
     x86_64)
-        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-amd64.zip"
+        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.5/warp-plus_linux-amd64.zip"
         ;;
     aarch64)
-        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-arm64.zip"
+        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.5/warp-plus_linux-arm64.zip"
         ;;
     armv7l)
-        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-arm7.zip"
+        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.5/warp-plus_linux-arm7.zip"
         ;;
     mips)
-        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-mips.zip"
+        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.5/warp-plus_linux-mips.zip"
         ;;
     mips64)
-        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-mips64.zip"
+        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.5/warp-plus_linux-mips64.zip"
         ;;
     mips64le)
-        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-mips64le.zip"
+        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.5/warp-plus_linux-mips64le.zip"
         ;;
     riscv64)
-        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.3/warp-plus_linux-riscv64.zip"
+        WARP_URL="https://github.com/bepass-org/warp-plus/releases/download/v1.2.5/warp-plus_linux-riscv64.zip"
         ;;
     *)
         echo -e "${RED}System architecture not supported.${NC}"
