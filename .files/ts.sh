@@ -20,8 +20,9 @@ if [ -z "$latest_version" ]; then
     exit 1
 fi
 
-# Detect CPU architecture and specific CPU type
-cpu_info=$(opkg print-architecture | awk '{print $2}')
+# Detect CPU architecture
+cpu_info=$(opkg print-architecture | awk 'NR==1 {print $2}')
+
 if [ -z "$cpu_info" ]; then
     echo "Failed to detect CPU architecture!"
     exit 1
@@ -29,26 +30,12 @@ fi
 
 # Map CPU architecture to the correct package name
 case "$cpu_info" in
-    aarch64_cortex-a53) pkg_arch="aarch64_cortex-a53" ;;
-    aarch64_cortex-a72) pkg_arch="aarch64_cortex-a72" ;;
-    aarch64_generic) pkg_arch="aarch64_generic" ;;
-    arm_cortex-a15_neon-vfpv4) pkg_arch="arm_cortex-a15_neon-vfpv4" ;;
-    arm_cortex-a5_vfpv4) pkg_arch="arm_cortex-a5_vfpv4" ;;
-    arm_cortex-a7) pkg_arch="arm_cortex-a7" ;;
-    arm_cortex-a7_neon-vfpv4) pkg_arch="arm_cortex-a7_neon-vfpv4" ;;
-    arm_cortex-a8_vfpv3) pkg_arch="arm_cortex-a8_vfpv3" ;;
-    arm_cortex-a9) pkg_arch="arm_cortex-a9" ;;
-    arm_cortex-a9_neon) pkg_arch="arm_cortex-a9_neon" ;;
-    arm_cortex-a9_vfpv3-d16) pkg_arch="arm_cortex-a9_vfpv3-d16" ;;
-    mipsel_24kc) pkg_arch="mipsel_24kc" ;;
-    mipsel_74kc) pkg_arch="mipsel_74kc" ;;
-    mipsel_mips32) pkg_arch="mipsel_mips32" ;;
-    mips_24kc) pkg_arch="mips_24kc" ;;
-    mips_4kec) pkg_arch="mips_4kec" ;;
-    mips_mips32) pkg_arch="mips_mips32" ;;
+    aarch64_cortex-a53|aarch64_cortex-a72|aarch64_generic) pkg_arch="$cpu_info" ;;
+    arm_cortex-a15_neon-vfpv4|arm_cortex-a5_vfpv4|arm_cortex-a7|arm_cortex-a7_neon-vfpv4|arm_cortex-a8_vfpv3|arm_cortex-a9|arm_cortex-a9_neon|arm_cortex-a9_vfpv3-d16) pkg_arch="$cpu_info" ;;
+    mipsel_24kc|mipsel_74kc|mipsel_mips32|mips_24kc|mips_4kec|mips_mips32) pkg_arch="$cpu_info" ;;
     x86_64) pkg_arch="x86_64" ;;
     *)
-        echo "Unsupported CPU architecture: $cpu_info"
+        echo "Unsupported CPU architecture detected: $cpu_info"
         exit 1
         ;;
 esac
