@@ -4,7 +4,7 @@ set -x  # Show executed commands
 
 while true; do
     if [ -f "/etc/init.d/passwall" ] && [ -f "/etc/init.d/passwall2" ]; then
-        OPTION=$(whiptail --title "PeDitX’s EZPasswall v2.0" --menu "Choose an option:" 15 60 8 \
+        OPTION=$(whiptail --title "PeDitX’s EZPasswall v2.2" --menu "Choose an option:" 15 60 8 \
             "1" "Install Passwall 1" \
             "2" "Install Passwall 2" \
             "3" "Install Passwall 1 + 2" \
@@ -16,7 +16,7 @@ while true; do
             --cancel-button "Exit" \
             3>&1 1>&2 2>&3)
     elif [ -f "/etc/init.d/passwall" ]; then
-        OPTION=$(whiptail --title "PeDitX’s EZPasswall v2.0" --menu "Choose an option:" 15 60 8 \
+        OPTION=$(whiptail --title "PeDitX’s EZPasswall v2.2" --menu "Choose an option:" 15 60 8 \
             "1" "Install Passwall 1" \
             "2" "Install Passwall 2" \
             "3" "Install Passwall 1 + 2" \
@@ -27,7 +27,7 @@ while true; do
             --cancel-button "Exit" \
             3>&1 1>&2 2>&3)
     elif [ -f "/etc/init.d/passwall2" ]; then
-        OPTION=$(whiptail --title "PeDitX’s EZPasswall v2.0" --menu "Choose an option:" 15 60 8 \
+        OPTION=$(whiptail --title "PeDitX’s EZPasswall v2.2" --menu "Choose an option:" 15 60 8 \
             "1" "Install Passwall 1" \
             "2" "Install Passwall 2" \
             "3" "Install Passwall 1 + 2" \
@@ -38,7 +38,7 @@ while true; do
             --cancel-button "Exit" \
             3>&1 1>&2 2>&3)
     else
-        OPTION=$(whiptail --title "PeDitX’s EZPasswall v2.0" --menu "Choose an option:" 15 60 8 \
+        OPTION=$(whiptail --title "PeDitX’s EZPasswall v2.2" --menu "Choose an option:" 15 60 8 \
             "1" "Install Passwall 1" \
             "2" "Install Passwall 2" \
             "3" "Install Passwall 1 + 2" \
