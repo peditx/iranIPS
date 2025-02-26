@@ -20,25 +20,28 @@ if [ -z "$latest_version" ]; then
     exit 1
 fi
 
-# Detect CPU architecture
-cpu_info=$(opkg print-architecture | awk 'NR==1 {print $2}')
+# Get all supported architectures from opkg
+arch_list=$(opkg print-architecture | awk '{print $2}')
 
-if [ -z "$cpu_info" ]; then
-    echo "Failed to detect CPU architecture!"
+# Find the first matching architecture in the available package list
+pkg_arch=""
+for arch in $arch_list; do
+    case "$arch" in
+        aarch64_cortex-a53|aarch64_cortex-a72|aarch64_generic|\
+        arm_cortex-a15_neon-vfpv4|arm_cortex-a5_vfpv4|arm_cortex-a7|\
+        arm_cortex-a7_neon-vfpv4|arm_cortex-a8_vfpv3|arm_cortex-a9|\
+        arm_cortex-a9_neon|arm_cortex-a9_vfpv3-d16|mipsel_24kc|\
+        mipsel_74kc|mipsel_mips32|mips_24kc|mips_4kec|mips_mips32|x86_64)
+            pkg_arch="$arch"
+            break
+            ;;
+    esac
+done
+
+if [ -z "$pkg_arch" ]; then
+    echo "Unsupported CPU architecture detected!"
     exit 1
 fi
-
-# Map CPU architecture to the correct package name
-case "$cpu_info" in
-    aarch64_cortex-a53|aarch64_cortex-a72|aarch64_generic) pkg_arch="$cpu_info" ;;
-    arm_cortex-a15_neon-vfpv4|arm_cortex-a5_vfpv4|arm_cortex-a7|arm_cortex-a7_neon-vfpv4|arm_cortex-a8_vfpv3|arm_cortex-a9|arm_cortex-a9_neon|arm_cortex-a9_vfpv3-d16) pkg_arch="$cpu_info" ;;
-    mipsel_24kc|mipsel_74kc|mipsel_mips32|mips_24kc|mips_4kec|mips_mips32) pkg_arch="$cpu_info" ;;
-    x86_64) pkg_arch="x86_64" ;;
-    *)
-        echo "Unsupported CPU architecture detected: $cpu_info"
-        exit 1
-        ;;
-esac
 
 # Base URL for downloads
 base_url="https://github.com/peditx/luci-app-themeswitch/releases/download/${latest_version}"
