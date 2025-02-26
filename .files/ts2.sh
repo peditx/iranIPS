@@ -6,6 +6,12 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
+# Create /var/lock directory if it doesn't exist
+if [ ! -d "/var/lock" ]; then
+    echo "Creating /var/lock directory..."
+    mkdir -p /var/lock
+fi
+
 # Fetch latest release version from GitHub API
 latest_version=$(curl -s https://api.github.com/repos/peditx/luci-app-themeswitch/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 
