@@ -2,7 +2,15 @@
 
 Set installation directory
 
-BASE_DIR="/usr/local/GoogleWifiLED" mkdir -p "$BASE_DIR" cd "$BASE_DIR" || exit 1
+#####
+#!/bin/sh
+
+# تعیین مسیر نصب
+BASE_DIR="/usr/local/GoogleWifiLED"
+[ -z "$BASE_DIR" ] && echo "❌ مسیر نصب تعریف نشده!" && exit 1
+mkdir -p "$BASE_DIR" || { echo "❌ ساخت دایرکتوری ناموفق بود!"; exit 1; }
+cd "$BASE_DIR" || exit 1
+####
 
 Dependencies
 
