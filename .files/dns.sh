@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CHOICE=$(whiptail --title "DNS Selector" --menu "Choose a DNS provider:" 20 78 12 \
+CHOICE=$(whiptail --title "DNS Changer" --menu "Choose a DNS provider:" 20 78 12 \
 "1" "Google (8.8.8.8, 8.8.4.4)" \
 "2" "iCloud (1.1.1.1, 1.1.1.2)" \
 "3" "Shecan (185.51.200.2, 178.22.122.100)" \
