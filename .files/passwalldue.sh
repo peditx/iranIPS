@@ -18,7 +18,7 @@ uci set network.wan.peerdns="0"
 
 uci set network.wan6.peerdns="0"
 
-uci set network.wan.dns='8.8.8.8'
+#uci set network.wan.dns='8.8.8.8'
 
 uci set network.wan6.dns='2001:4860:4860::8888'
 
