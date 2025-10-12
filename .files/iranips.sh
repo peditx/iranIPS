@@ -1,7 +1,8 @@
 #!/bin/sh
 
 # Full script for Passwall2 configuration
-
+opkg update
+opkg install v2ray-geoip v2ray-geosite v2ray-geosite-ir
 # Section 1: Remove unused rules to clean up the configuration
 echo "Deleting extra rules..."
 uci delete passwall2.ProxyGame
