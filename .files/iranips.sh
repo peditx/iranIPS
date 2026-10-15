@@ -21,7 +21,7 @@
 
 set -e
 
-VERSION=2.0.1
+VERSION=2.0.2
 APP=passwall2
 APP_PATH=/usr/share/passwall2
 LOG=/tmp/iranips.log
@@ -145,6 +145,26 @@ xray_test() {
 		printf 'xray produced no output at all (exit status %s)\n' "$rc" > "$TEST_ERR"
 	fi
 	return 1
+}
+
+# Xray words a missing geo code differently across releases, all of them seen in
+# real output (checked against 26.3.27 and against the wording passwall2's builds use):
+#   "code not found in geosite.dat: IR"          "failed to load geosite: IR"
+#   "code not found in geoip.dat: ZZZ-..."        "failed to load GeoIP: ZZZ-..."
+#   "failed to check code IR from geosite.dat"    "failed to load code IR from geosite.dat"
+# Sets GEO_KIND (geosite|geoip) and GEO_CODE; returns 1 when no geo error matched.
+extract_geo_code() {
+	GEO_KIND=""
+	# delimiter must not be "|" - inside s|...| the \|| alternation would be read
+	# as a literal pipe instead of an alternation operator
+	GEO_CODE=$(sed -n \
+		-e 's#.*code not found in \(geoip\|geosite\)\.dat: *\([^ >]*\).*#\2#p' \
+		-e 's#.*failed to load \([Gg]eo[A-Za-z]*\): *\([^ >]*\).*#\2#p' \
+		-e 's#.*failed to \(check\|load\) code \([^ ]*\) from \(geoip\|geosite\)\.dat.*#\2#p' \
+		"$TEST_ERR" | head -n1)
+	if [ -z "$GEO_CODE" ]; then return 1; fi
+	if grep -qi 'geoip' "$TEST_ERR"; then GEO_KIND=geoip; else GEO_KIND=geosite; fi
+	return 0
 }
 
 core_running() {
@@ -377,17 +397,16 @@ if bin_ok "$XRAY_BIN"; then
 			log "Xray config test: PASSED"
 			break
 		fi
-		code=$(sed -n 's/.*failed to \(check\|load\) code \([^ ]*\) from .*/\2/p' "$TEST_ERR" | head -n1)
-		if [ -z "$code" ]; then
+		if ! extract_geo_code; then
 			log "Xray said:"
 			sed -n '1,12p' "$TEST_ERR" | tee -a "$LOG"
 			die "Xray rejected the test config (see above)"
 		fi
-		if NEW=$(printf '%s\n' "$DOMAINS" | awk -v c="$code" \
+		if [ "$GEO_KIND" = geosite ] && NEW=$(printf '%s\n' "$DOMAINS" | awk -v c="$GEO_CODE" \
 			'tolower($0) == "geosite:" tolower(c) { f = 1; next } { print } END { if (!f) exit 1 }'); then
 			DOMAINS=$NEW
-			PRUNED="$PRUNED geosite:$code"
-			warn "geosite:$code is not in the installed geo data - dropped from the rule"
+			PRUNED="$PRUNED geosite:$GEO_CODE"
+			warn "geosite:$GEO_CODE is not in the installed geo data - dropped from the rule"
 			attempt=$((attempt + 1))
 			if [ "$attempt" -gt 4 ]; then
 				log "Xray said:"
@@ -398,7 +417,7 @@ if bin_ok "$XRAY_BIN"; then
 		fi
 		log "Xray said:"
 		sed -n '1,12p' "$TEST_ERR" | tee -a "$LOG"
-		die "geo code '$code' is missing and is required - geo data is incomplete"
+		die "geo code '$GEO_CODE' ($GEO_KIND) is missing and cannot be dropped - geo data is incomplete"
 	done
 	# keep the pruned list in UCI as well
 	uci set $APP.Iran.domain_list="$DOMAINS"
