@@ -21,7 +21,7 @@
 
 set -e
 
-VERSION=2.0.0
+VERSION=2.0.1
 APP=passwall2
 APP_PATH=/usr/share/passwall2
 LOG=/tmp/iranips.log
@@ -124,11 +124,25 @@ build_test_config() {
 	printf '\n'
 }
 
-# run the installed Xray against the test config; diagnostics land in $TEST_ERR
+# run the installed Xray against the test config; diagnostics land in $TEST_ERR.
+# passwall2 reads the test result from stdout (app.sh: ... run -test -c ... > file),
+# so both streams are captured - and if this form is not supported at all
+# (25.12's app.sh never calls -test), the legacy form is tried as a fallback.
 xray_test() {
-	if XRAY_LOCATION_ASSET="$ASSET" "$XRAY_BIN" run -test -c "$1" >/dev/null 2>"$TEST_ERR"; then return 0; fi
-	if grep -qiE 'unknown command|unknown flag|usage:' "$TEST_ERR" && ! grep -qi 'failed to' "$TEST_ERR"; then
-		XRAY_LOCATION_ASSET="$ASSET" "$XRAY_BIN" -test -config "$1" >/dev/null 2>"$TEST_ERR" && return 0
+	: > "$TEST_ERR"
+	XRAY_LOCATION_ASSET="$ASSET" "$XRAY_BIN" run -test -c "$1" >"$TEST_ERR" 2>&1
+	rc=$?
+	[ "$rc" -eq 0 ] && return 0
+	if [ ! -s "$TEST_ERR" ] || grep -qiE 'unknown command|unknown flag|usage:' "$TEST_ERR"; then
+		if grep -qi 'failed to' "$TEST_ERR" 2>/dev/null; then
+			return 1
+		fi
+		XRAY_LOCATION_ASSET="$ASSET" "$XRAY_BIN" -test -config "$1" >"$TEST_ERR" 2>&1
+		rc=$?
+		[ "$rc" -eq 0 ] && return 0
+	fi
+	if [ ! -s "$TEST_ERR" ]; then
+		printf 'xray produced no output at all (exit status %s)\n' "$rc" > "$TEST_ERR"
 	fi
 	return 1
 }
