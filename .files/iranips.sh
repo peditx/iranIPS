@@ -21,6 +21,7 @@
 
 set -e
 
+VERSION=2.0.0
 APP=passwall2
 APP_PATH=/usr/share/passwall2
 LOG=/tmp/iranips.log
@@ -52,6 +53,7 @@ restore_backup() {
 on_exit() {
 	st=$?
 	if [ "$st" -ne 0 ]; then
+		log "version: $VERSION"
 		if [ "$COMMITTED" = 1 ]; then
 			restore_backup
 			log "RESULT: FAILED - the previous configuration was restored, nothing changed."
@@ -159,7 +161,7 @@ case "$GEO_SOURCE" in
 	*) echo "usage: $0 [auto|chocolate4u]" >&2; exit 2 ;;
 esac
 
-log "=== IranIPS start (geo source: $GEO_SOURCE) ==="
+log "=== IranIPS v$VERSION start (geo source: $GEO_SOURCE) ==="
 
 # --- 0. sanity ----------------------------------------------------------
 command -v uci >/dev/null 2>&1 || die "uci not found - run this on the OpenWrt router"
@@ -417,5 +419,6 @@ if [ -n "$PRUNED" ]; then
 fi
 log "log: $LOG"
 log "backup: /etc/config/$APP.iranips.bak (copy it back over /etc/config/$APP and restart passwall2 to undo)"
+log "version: $VERSION"
 log "RESULT: OK - Iranian traffic goes direct, everything else goes through '$DEF_NODE'."
 exit 0
